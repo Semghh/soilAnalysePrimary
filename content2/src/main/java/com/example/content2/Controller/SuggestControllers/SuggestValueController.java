@@ -4,6 +4,7 @@ import com.example.content2.POJO.Result;
 import com.example.content2.Service.SuggestValueService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -53,6 +54,11 @@ public class SuggestValueController {
     public Result getTotal(){
         Integer total = suggestValueService.getSuggestValueTotal();
         return Result.getInstance(200,"查询成功",total);
+    }
+
+    @PostMapping("/excel")
+    public Result getExcel(@RequestBody HashMap map){
+        return suggestValueService.getExcelURl(map);
     }
 
 }

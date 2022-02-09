@@ -27,3 +27,9 @@ server:
 
 #logging:
 #  config: log4j2-spring.xml
+
+
+excelTemplate:
+  absolutePath: C:/Users/CrazyH/Desktop/ExcelTemplate.xls
+  indicatedPath: C:/Users/CrazyH/Desktop
+  serverIp: 120.79.189.55

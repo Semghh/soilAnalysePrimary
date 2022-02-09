@@ -8,11 +8,14 @@ import com.example.content2.POJO.Result;
 import com.example.content2.POJO.SuggestValue;
 import com.example.content2.Service.SuggestValueService;
 import com.example.content2.Util.*;
+import com.example.content2.Util.Execel.GenerateSmartCard;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service("SuggestValueService")
@@ -25,11 +28,19 @@ public class SuggestValueServiceImpl implements SuggestValueService {
     private RegionMapper regionMapper;
     private MeasuredValueMapper measuredValueMapper;
     private ItemProperties itemProperties;
+    private GenerateSmartCard generateSmartCard;
+
+    @Value("${excelTemplate.serverIp}")
+    private String serverIp;
+
+    @Value("${excelTemplate.indicatedPath}")
+    private String indicatedPath;
 
     @Autowired
     public SuggestValueServiceImpl(SuggestValueMapper suggestValueMapper, MeasuredValueMapper measuredValueMapper,
                                    ExpertSuggestValueMapper expertSuggestValueMapper, CropTypesMapper cropTypesMapper,
-                                   ElementMapper elementMapper, RegionMapper regionMapper, ItemProperties itemProperties) {
+                                   ElementMapper elementMapper, RegionMapper regionMapper,
+                                   ItemProperties itemProperties,GenerateSmartCard generateSmartCard) {
         this.suggestValueMapper = suggestValueMapper;
         this.expertSuggestValueMapper = expertSuggestValueMapper;
         this.cropTypesMapper = cropTypesMapper;
@@ -37,6 +48,7 @@ public class SuggestValueServiceImpl implements SuggestValueService {
         this.regionMapper = regionMapper;
         this.measuredValueMapper = measuredValueMapper;
         this.itemProperties = itemProperties;
+        this.generateSmartCard = generateSmartCard;
     }
 
     @Override
@@ -216,8 +228,39 @@ public class SuggestValueServiceImpl implements SuggestValueService {
         return suggestValueMapper.getSuggestValuesTotal();
     }
 
+    @Override
+    public Result getExcelURl(HashMap map) {
+
+        String[] fieldNames = new String[]{"mea_Effective_N","mea_Olsen_P","mea_Olsen_K","mea_organic_matter","mea_ph"};
+        Class[] clz = new Class[]{Double.class,Double.class,Double.class,Double.class,Double.class};
+        long l = System.currentTimeMillis();
+        String path = indicatedPath+"/"+l+".xls";
+        try {
+            Object[] field = getFieldFromMap.getField(map, fieldNames, clz);
+
+
+            try {
+                generateSmartCard.generateSmartCard1(path,field);
+
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            } catch (GenerateSmartCard.notCorrectFile | GenerateSmartCard.TemplateFileNotFound notCorrectFile) {
+                notCorrectFile.printStackTrace();
+                return Result.getInstance(501, notCorrectFile.getMessage(), null);
+            }
+
+
+        } catch (getFieldFromMap.notFoundSuchField notFoundSuchField) {
+            notFoundSuchField.printStackTrace();
+            return Result.getInstance(201,"参数错误 ： 找不到指定参数",map);
+        }
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        resultMap.put("url","http://"+serverIp+path);
+        return Result.getInstance(200,"生成成功!",resultMap);
+     }
+
     /***
-     *  检查参数合法性
+     *  检查fun1参数合法性
      *  检查: 字符串非空。  经纬度仅为数字
      *
      * @param longitudeText 经度字符串

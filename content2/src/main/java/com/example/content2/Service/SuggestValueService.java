@@ -32,4 +32,6 @@ public interface SuggestValueService {
     public Result deleteSuggestValue(HashMap map);
 
     public Integer getSuggestValueTotal();
+
+    public Result getExcelURl(HashMap map);
 }
