@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.content2.Mapper.ExpertSuggestValueMapper">
+    <insert id="insertNewExpertSuggestValue">
+        insert  into `expert_suggest_value`
+        (`longitude`,`latitude`,`element_id`,`crop_type_id`,`suggest_value`)
+        values(#{longitude},#{latitude},#{element_Id},#{cropTypeId},#{suggestValue})
+    </insert>
+    <update id="updateSuggestValue">
+        update `expert_suggest_value`
+        set `suggest_value`=#{val}
+        where `longitude` = #{lon} and `latitude`=#{lat} and `element_id`=#{ele}
+          and `crop_type_id`=#{cro}
+        limit 1
+    </update>
+    <update id="updateSuggestValueByBean">
+        update `expert_suggest_value`
+        set `suggest_value`=#{suggestValue}
+        where `longitude` = #{longitude} and `latitude`=#{latitude} and `element_id`=#{element_Id}
+          and `crop_type_id`=#{cropTypeId}
+        limit 1
+    </update>
+    <delete id="deleteById">
+        delete from `expert_suggest_value`
+        where `id`=#{id}
+        limit 1
+    </delete>
+
+
+    <select id="getExpertSuggestValue" resultType="java.lang.Double">
+        select `suggest_value`
+        from `expert_suggest_value`
+        where `longitude` = #{lon} and `latitude`=#{lat} and `element_id`=#{ele}
+                and `crop_type_id`=#{cro}
+    </select>
+    <select id="existSuggestValue" resultType="java.lang.Integer">
+        select count(*)
+        from `expert_suggest_value`
+        where `longitude` = #{lon} and `latitude`=#{lat} and `element_id`=#{ele}
+          and `crop_type_id`=#{cro}
+    </select>
+    <select id="existSuggestValueByBean" resultType="java.lang.Integer">
+        select count(*)
+        from `expert_suggest_value`
+        where `longitude` = #{longitude} and `latitude`=#{latitude} and `element_id`=#{element_Id}
+          and `crop_type_id`=#{cropTypeId}
+    </select>
+    <select id="getExpertSuggestValueByLimit" resultType="com.example.content2.POJO.ExpertSuggestValue">
+        select *
+        from `expert_suggest_value`
+        limit #{index},#{size}
+    </select>
+    <select id="getTotal" resultType="java.lang.Integer">
+        select count(*)
+        from  `expert_suggest_value`
+    </select>
+</mapper>

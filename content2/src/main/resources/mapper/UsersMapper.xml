@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.content2.Mapper.UsersMapper">
+    <insert id="insertNewUser">
+        insert into `users`
+        (`username_`,`password_`,`peasant_id`,`roles`)
+        values (#{username_},#{password_},#{peasant_id},#{roles})
+    </insert>
+
+
+    <insert id="registerNewPeasantUser">
+        insert into `users`
+        (`username_`,`password_`,`peasant_id`,`roles`)
+        values(#{username_},#{password_},#{peasant_id},'peasant')
+    </insert>
+
+
+
+    <update id="dynamicUpdateUser">
+        update `users`
+        <set>
+            <if test="password_ != null">`password_`=#{password_},</if>
+            <if test="peasant_id != null">`peasant_id`=#{peasant_id},</if>
+            <if test="roles !=null">`roles`=#{roles}</if>
+        </set>
+        where `id`=#{id}
+        limit 1
+    </update>
+    <delete id="deleteUserById">
+        delete from `users`
+        where  `id`=#{id}
+        limit 1
+
+    </delete>
+
+    <select id="getUsersByLimit" resultType="com.example.content2.POJO.Users">
+        select *
+        from `users`
+        order by `id`
+        limit #{index},#{size}
+    </select>
+    <select id="getUsersTotal" resultType="java.lang.Integer">
+        select count(*)
+        from `users`
+    </select>
+    <select id="getDistinctRoles" resultType="java.lang.String">
+        select distinct `roles`
+        from `users`
+    </select>
+
+
+    <select id="getHashPWbyUsername" resultType="java.lang.String">
+        select `password_`
+        from `users`
+        where `username_` =#{username}
+    </select>
+
+
+</mapper>
