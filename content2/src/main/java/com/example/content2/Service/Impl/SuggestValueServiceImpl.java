@@ -255,7 +255,7 @@ public class SuggestValueServiceImpl implements SuggestValueService {
             return Result.getInstance(201,"参数错误 ： 找不到指定参数",map);
         }
         HashMap<Object, Object> resultMap = new HashMap<>();
-        resultMap.put("url","http://"+serverIp+path);
+        resultMap.put("url","http://"+serverIp+"/"+l+".xls");
         return Result.getInstance(200,"生成成功!",resultMap);
      }
 
@@ -311,28 +311,28 @@ public class SuggestValueServiceImpl implements SuggestValueService {
 //
 //
 //
-//        String[] fieldNames = new String[]{
-//                "sug_Olsen_K","sug_Olsen_P","sug_Effective_N"};
-//        Class[] fieldClz = new Class[]{Double.class,Double.class,Double.class};
-//        Object[] field = new Object[0];
-//        try {
-//            field = getFieldFromMap.getField(resultMap, fieldNames, fieldClz);
-//        } catch (getFieldFromMap.notFoundSuchField notFoundSuchField) {
-//            notFoundSuchField.printStackTrace();
-//        }
-//
-//        Double K2SO4 = (Double)field[0] / 0.6;
-//
-//        Double KCL = (Double)field[0]/0.5;
-//
-//        Double erAn = (Double) field[1]/0.46;
-//
-//        Double niaoSu = ((Double) field[2]-erAn*0.16)/0.6;
-//
-//        resultMap.put("sug_K2SO4", DoubleFormat.format(2,K2SO4));
-//        resultMap.put("sug_KCL", DoubleFormat.format(2,KCL));
-//        resultMap.put("sug_erAn", DoubleFormat.format(2,erAn));
-//        resultMap.put("sug_niaoSu", DoubleFormat.format(2,niaoSu));
+        String[] fieldNames = new String[]{
+                "sug_Olsen_K","sug_Olsen_P","sug_Effective_N"};
+        Class[] fieldClz = new Class[]{Double.class,Double.class,Double.class};
+        Object[] field = new Object[0];
+        try {
+            field = getFieldFromMap.getField(resultMap, fieldNames, fieldClz);
+        } catch (getFieldFromMap.notFoundSuchField notFoundSuchField) {
+            notFoundSuchField.printStackTrace();
+        }
+
+        Double K2SO4 = (Double)field[0] / 0.6;
+
+        Double KCL = (Double)field[0]/0.5;
+
+        Double erAn = (Double) field[1]/0.46;
+
+        Double niaoSu = ((Double) field[2]-erAn*0.16)/0.6;
+
+        resultMap.put("sug_K2SO4", DoubleFormat.format(2,K2SO4));
+        resultMap.put("sug_KCL", DoubleFormat.format(2,KCL));
+        resultMap.put("sug_erAn", DoubleFormat.format(2,erAn));
+        resultMap.put("sug_niaoSu", DoubleFormat.format(2,niaoSu));
     }
 
 

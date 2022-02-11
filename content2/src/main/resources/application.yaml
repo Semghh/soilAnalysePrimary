@@ -20,7 +20,7 @@ mybatis:
 #      password: 123456
 
 server:
-  port: 8079
+  port: 8000
   servlet:
     context-path: /content1-2.0
 
@@ -29,7 +29,17 @@ server:
 #  config: log4j2-spring.xml
 
 
+
+# 生产环境
+
 excelTemplate:
-  absolutePath: C:/Users/CrazyH/Desktop/ExcelTemplate.xls
-  indicatedPath: C:/Users/CrazyH/Desktop
+  absolutePath: /usr/share/nginx/content2/ExcelTemplate.xls
+  indicatedPath: /usr/share/nginx/content2/tempExcel
   serverIp: 120.79.189.55
+
+# 开发环境
+#
+#excelTemplate:
+#  absolutePath: C:/Users/CrazyH/Desktop/ExcelTemplate.xls
+#  indicatedPath: C:/Users/CrazyH/Desktop
+#  serverIp: 120.79.189.55
