@@ -20,7 +20,7 @@ mybatis:
 #      password: 123456
 
 server:
-  port: 8000
+  port: 8001
   servlet:
     context-path: /content1-2.0
 
@@ -32,14 +32,15 @@ server:
 
 # 生产环境
 
-excelTemplate:
-  absolutePath: /usr/share/nginx/content2/ExcelTemplate.xls
-  indicatedPath: /usr/share/nginx/content2/tempExcel
-  serverIp: 120.79.189.55
+#excelTemplate:
+#  absolutePath: /usr/share/nginx/content2/ExcelTemplate.xls
+#  indicatedPath: /usr/share/nginx/content2/tempExcel
+#  serverIp: 120.79.189.55
 
 # 开发环境
-#
-#excelTemplate:
-#  absolutePath: C:/Users/CrazyH/Desktop/ExcelTemplate.xls
-#  indicatedPath: C:/Users/CrazyH/Desktop
-#  serverIp: 120.79.189.55
+excelTemplate:
+  absolutePath: C:/Users/CrazyH/Desktop/ExcelTemplate.xls
+  indicatedPath: C:/Users/CrazyH/Desktop
+  serverIp: 120.79.189.55
+  sleepTimeKeep: 1000*60*60*5
+  outOfDateThreshold: 1000*60*60*24

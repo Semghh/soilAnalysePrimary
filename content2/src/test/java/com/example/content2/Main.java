@@ -2,6 +2,8 @@ package com.example.content2;
 
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.UUID;
 
 public class Main {
@@ -24,17 +26,9 @@ public class Main {
 
     @Test
     public void test2(){
-        System.out.println(123456);
-        System.out.println(123456);
-        System.out.println(123456);
-        System.out.println(123456);
-        System.out.println(123456);
-        System.out.println(123456);
-        System.out.println(123456);
-        System.out.println(123456);
-        System.out.println(123456);
-        System.out.println(123456);
-        System.out.println(123456);
+        String s = "98889*44*100";
+        String[] split = s.split("\\D");
+        System.out.println(Arrays.toString(split));
 
     }
 

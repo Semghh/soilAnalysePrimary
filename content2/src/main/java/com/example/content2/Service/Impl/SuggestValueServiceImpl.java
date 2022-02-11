@@ -15,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service("SuggestValueService")
 public class SuggestValueServiceImpl implements SuggestValueService {
@@ -30,6 +32,8 @@ public class SuggestValueServiceImpl implements SuggestValueService {
     private ItemProperties itemProperties;
     private GenerateSmartCard generateSmartCard;
 
+    private ConcurrentHashMap<File,Long> timerQueue;
+
     @Value("${excelTemplate.serverIp}")
     private String serverIp;
 
@@ -40,7 +44,8 @@ public class SuggestValueServiceImpl implements SuggestValueService {
     public SuggestValueServiceImpl(SuggestValueMapper suggestValueMapper, MeasuredValueMapper measuredValueMapper,
                                    ExpertSuggestValueMapper expertSuggestValueMapper, CropTypesMapper cropTypesMapper,
                                    ElementMapper elementMapper, RegionMapper regionMapper,
-                                   ItemProperties itemProperties,GenerateSmartCard generateSmartCard) {
+                                   ItemProperties itemProperties,GenerateSmartCard generateSmartCard,
+                                   ConcurrentHashMap<File,Long> timerQueue) {
         this.suggestValueMapper = suggestValueMapper;
         this.expertSuggestValueMapper = expertSuggestValueMapper;
         this.cropTypesMapper = cropTypesMapper;
@@ -49,6 +54,7 @@ public class SuggestValueServiceImpl implements SuggestValueService {
         this.measuredValueMapper = measuredValueMapper;
         this.itemProperties = itemProperties;
         this.generateSmartCard = generateSmartCard;
+        this.timerQueue = timerQueue;
     }
 
     @Override
@@ -238,7 +244,6 @@ public class SuggestValueServiceImpl implements SuggestValueService {
         try {
             Object[] field = getFieldFromMap.getField(map, fieldNames, clz);
 
-
             try {
                 generateSmartCard.generateSmartCard1(path,field);
 
@@ -256,6 +261,8 @@ public class SuggestValueServiceImpl implements SuggestValueService {
         }
         HashMap<Object, Object> resultMap = new HashMap<>();
         resultMap.put("url","http://"+serverIp+"/"+l+".xls");
+
+        timerQueue.put(new File(path),l);
         return Result.getInstance(200,"生成成功!",resultMap);
      }
 
