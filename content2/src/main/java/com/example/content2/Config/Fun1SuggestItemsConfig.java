@@ -2,8 +2,10 @@ package com.example.content2.Config;
 
 import com.example.content2.Service.Impl.SuggestValueServiceImpl;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import com.example.content2.Service.Impl.SuggestValueServiceImpl.ItemProperties.*;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Configuration
 public class Fun1SuggestItemsConfig {

@@ -5,9 +5,17 @@ spring:
     username: root
     password: zxc,./123
 
+#云服务端
+  redis:
+    port: 6300
+    host: 127.0.0.1
+    password: zxc,./123
+
+#开发环境
 #  redis:
-#    port: 6379
-#    url: 120.79.189.55
+#    port: 6300
+#    host: 120.79.189.55
+#    password: zxc,./123
 
 mybatis:
   type-aliases-package: com.example.content2.POJO
@@ -20,7 +28,7 @@ mybatis:
 #      password: 123456
 
 server:
-  port: 8001
+  port: 8000
   servlet:
     context-path: /content1-2.0
 
@@ -30,17 +38,19 @@ server:
 
 
 
-# 生产环境
+# 云服务端
 
-#excelTemplate:
-#  absolutePath: /usr/share/nginx/content2/ExcelTemplate.xls
-#  indicatedPath: /usr/share/nginx/content2/tempExcel
-#  serverIp: 120.79.189.55
-
-# 开发环境
 excelTemplate:
-  absolutePath: C:/Users/CrazyH/Desktop/ExcelTemplate.xls
-  indicatedPath: C:/Users/CrazyH/Desktop
+  absolutePath: /usr/share/nginx/content2/ExcelTemplate.xls
+  indicatedPath: /usr/share/nginx/content2/tempExcel
   serverIp: 120.79.189.55
   sleepTimeKeep: 1000*60*60*5
   outOfDateThreshold: 1000*60*60*24
+
+# 开发环境
+#excelTemplate:
+#  absolutePath: C:/Users/CrazyH/Desktop/ExcelTemplate.xls
+#  indicatedPath: C:/Users/CrazyH/Desktop
+#  serverIp: 120.79.189.55
+#  sleepTimeKeep: 1000*60*60*5
+#  outOfDateThreshold: 1000*60*60*24

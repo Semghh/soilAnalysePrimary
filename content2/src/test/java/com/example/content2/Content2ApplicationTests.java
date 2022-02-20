@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.example.content2.Service.Impl.SuggestValueServiceImpl.ItemProperties.items;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 

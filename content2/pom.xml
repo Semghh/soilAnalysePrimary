@@ -10,9 +10,9 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>content2</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <name>content2</name>
-    <description>Demo project for Spring Boot</description>
+    <description>soil analyse</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>
@@ -52,10 +52,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aspects</artifactId>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.security</groupId>-->
@@ -104,6 +100,10 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-scratchpad</artifactId>
             <version>3.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
     </dependencies>

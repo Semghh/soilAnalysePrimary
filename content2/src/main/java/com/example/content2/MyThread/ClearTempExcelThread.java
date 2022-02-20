@@ -2,6 +2,8 @@ package com.example.content2.MyThread;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -13,7 +15,6 @@ public class ClearTempExcelThread {
 
 
     private ConcurrentHashMap<File,Long> timerQueue;
-
 
 
     @Autowired

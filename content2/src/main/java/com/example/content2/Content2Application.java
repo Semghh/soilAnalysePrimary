@@ -14,7 +14,6 @@ import java.util.Arrays;
 
 
 @SpringBootApplication
-@EnableAspectJAutoProxy
 public class Content2Application {
 
     public static void main(String[] args) {
