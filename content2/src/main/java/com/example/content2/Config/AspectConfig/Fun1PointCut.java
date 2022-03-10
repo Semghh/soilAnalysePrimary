@@ -2,6 +2,7 @@ package com.example.content2.Config.AspectConfig;
 
 import com.example.content2.POJO.Fun1Cost;
 import com.example.content2.Service.Fun1CostService;
+import com.example.content2.Util.RedisMsgQueue;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
@@ -16,8 +17,6 @@ import javax.annotation.Resource;
 @Component
 @Aspect
 public class Fun1PointCut {
-
-
     @Resource(name = "defaultRedisTemplate")
     private RedisTemplate redisTemplate;
 
@@ -34,7 +33,7 @@ public class Fun1PointCut {
         Object proceed = joinPoint.proceed(joinPoint.getArgs());
         long end = System.currentTimeMillis();
         fun1CostService.newFun1Cost(new Fun1Cost(null,start,end-start));
-        redisTemplate.opsForValue().increment("fun1Count");
+        RedisMsgQueue.submit(()->redisTemplate.opsForValue().increment("fun1Count"));
         return proceed;
     }
 
