@@ -15,4 +15,13 @@ public class Region {
     private String name_village; //村名称
     private Double longitude;//经度
     private Double latitude;//纬度
+
+
+    @Override
+    public boolean equals(Object o){
+        if (o instanceof Region){
+            return this.id.equals(((Region) o).id);
+        }
+        return false;
+    }
 }

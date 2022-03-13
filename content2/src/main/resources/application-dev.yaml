@@ -1,0 +1,7 @@
+# 开发环境
+excelTemplate:
+  absolutePath: C:/Users/CrazyH/Desktop/ExcelTemplate.xls
+  indicatedPath: C:/Users/CrazyH/Desktop
+  serverIp: 120.79.189.55
+  sleepTimeKeep: 1000*60*60*5
+  outOfDateThreshold: 1000*60*60*24

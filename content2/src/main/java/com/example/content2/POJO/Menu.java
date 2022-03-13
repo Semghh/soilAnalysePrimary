@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class Menu {
+
     private Integer id;
     private String name; //菜单名字
     private String url; //菜单url
@@ -35,6 +36,14 @@ public class Menu {
         }
         sb.deleteCharAt(sb.length()-1);
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (o instanceof Menu){
+            return this.id.equals(((Menu) o).id);
+        }
+        return false;
     }
 
 }

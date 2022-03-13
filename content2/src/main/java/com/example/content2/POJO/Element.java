@@ -12,4 +12,12 @@ public class Element {
     private String expression_;
     private String translation;
 
+
+    @Override
+    public boolean equals(Object o){
+        if (o instanceof Element){
+            return this.id.equals(((Element) o).id);
+        }
+        return false;
+    }
 }

@@ -47,6 +47,7 @@ public class AdminMenuTree {
         return new Menu[]{build1,build2,build3,build4};
     }
 
+    //Excel文件的计时器容器
     @Bean("tempExcelTimerQueue")
     public ConcurrentHashMap<File,Long> tempExcelTimerQueue(){
         return new ConcurrentHashMap<>();

@@ -12,4 +12,13 @@ public class Peasant {
      private String pName;
      private String id_card;
 
+
+     @Override
+     public boolean equals(Object o){
+          if (o instanceof Peasant){
+               return this.id.equals(((Peasant) o).id);
+          }
+          return false;
+     }
+
 }

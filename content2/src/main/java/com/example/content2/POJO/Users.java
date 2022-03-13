@@ -13,4 +13,13 @@ public class Users {
     private String password_;
     private Integer peasant_id;
     private String roles;
+
+
+    @Override
+    public boolean equals(Object o){
+        if (o instanceof Users){
+            return this.id.equals(((Users) o).id);
+        }
+        return false;
+    }
 }

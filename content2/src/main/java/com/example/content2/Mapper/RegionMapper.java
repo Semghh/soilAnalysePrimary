@@ -1,5 +1,6 @@
 package com.example.content2.Mapper;
 
+import com.example.content2.Annotation.MonitorQuery;
 import com.example.content2.POJO.Region;
 import org.apache.ibatis.annotations.*;
 
@@ -26,7 +27,7 @@ public interface RegionMapper {
     @Select("select * from region where longitude=#{longitude} and latitude=#{latitude}")
     public Region getRegionByLongitudeAndLatitude(@Param("longitude") Double Longitude, @Param("latitude") Double Latitude);
 
-
+    @MonitorQuery
     public ArrayList<Region> selectOffsetRegion(@Param("longitude_low") Double longitude_low,
                                                 @Param("longitude_high") Double longitude_high,
                                                 @Param("latitude_low") Double latitude_low,

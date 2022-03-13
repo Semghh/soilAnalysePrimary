@@ -5,14 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- *
- * 这个注解用于标注Mapper层,用于美化数据库查询监控。
- *
- *
- */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface QueryName {
-    String value();
+public @interface MonitorQuery {
+
 }

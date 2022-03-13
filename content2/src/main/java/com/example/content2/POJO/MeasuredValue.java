@@ -2,10 +2,13 @@ package com.example.content2.POJO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class MeasuredValue {
+
     private Long id_village;
     private Double ph;
     private Double organic_matter;
@@ -20,4 +23,11 @@ public class MeasuredValue {
     private Double Effective_N;
 
 
+    @Override
+    public boolean equals(Object o){
+        if (o instanceof MeasuredValue){
+            return this.id_village.equals(((MeasuredValue) o).id_village);
+        }
+        return false;
+    }
 }

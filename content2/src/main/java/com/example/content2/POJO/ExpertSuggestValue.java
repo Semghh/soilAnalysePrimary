@@ -15,4 +15,12 @@ public class ExpertSuggestValue {
     private Integer cropTypeId;
     private Double suggestValue;
 
+
+    @Override
+    public boolean equals(Object o){
+        if (o instanceof ExpertSuggestValue){
+            return this.id.equals(((ExpertSuggestValue) o).id);
+        }
+        return false;
+    }
 }

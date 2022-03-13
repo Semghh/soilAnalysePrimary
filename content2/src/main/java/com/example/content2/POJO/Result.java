@@ -17,4 +17,6 @@ public class Result {
     public static Result getInstance(int code, String msg, Object data) {
         return new Result(code, msg, data);
     }
+
+
 }

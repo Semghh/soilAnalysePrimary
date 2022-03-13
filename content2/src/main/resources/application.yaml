@@ -4,12 +4,8 @@ spring:
     url: jdbc:mysql://localhost:3306/content2?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
     username: root
     password: zxc,./123
-
-#云服务端
-#  redis:
-#    port: 6300
-#    host: 127.0.0.1
-#    password: zxc,./123
+  profiles:
+    active: dev
 
 #开发环境
   redis:
@@ -28,30 +24,10 @@ mybatis:
 #      password: 123456
 
 server:
-  port: 8000
+  port: 8000  #云端和本地均在8000
   servlet:
     context-path: /content1-2.0
 
 
 #logging:
 #  config: log4j2-spring.xml
-
-
-
-# 云服务端
-#
-#excelTemplate:
-#  absolutePath: /usr/share/nginx/content2/ExcelTemplate.xls
-#  indicatedPath: /usr/share/nginx/content2/tempExcel
-#  serverIp: 120.79.189.55
-#  sleepTimeKeep: 1000*60*60*5
-#  outOfDateThreshold: 1000*60*60*24
-
-# 开发环境
-excelTemplate:
-  absolutePath: C:/Users/CrazyH/Desktop/ExcelTemplate.xls
-  indicatedPath: C:/Users/CrazyH/Desktop
-  serverIp: 120.79.189.55
-  sleepTimeKeep: 1000*60*60*5
-  outOfDateThreshold: 1000*60*60*24
-debug: true

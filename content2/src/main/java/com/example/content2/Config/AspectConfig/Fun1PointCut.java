@@ -23,6 +23,7 @@ public class Fun1PointCut {
     @Resource
     private Fun1CostService fun1CostService;
 
+
     @Pointcut("execution(public * com.example.content2.Service.SuggestValueService.fun1(..)   )")
     public void fun1PointCut(){
     }

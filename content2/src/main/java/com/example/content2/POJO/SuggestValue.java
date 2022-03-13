@@ -14,4 +14,13 @@ public class SuggestValue {
     private Double min_value;
     private Double max_value;
     private Double result;
+
+
+    @Override
+    public boolean equals(Object o){
+        if (o instanceof SuggestValue){
+            return this.id.equals(((SuggestValue) o).id);
+        }
+        return false;
+    }
 }
