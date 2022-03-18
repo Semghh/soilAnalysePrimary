@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class getFieldFromMap {
 
-    static public Object[] getField(Map map, String[]fieldNames,Class[] clz)
+    static public Object[] get(Map map, String[]fieldNames, Class[] clz)
             throws notFoundSuchField{
         Object[] res = new Object[fieldNames.length];
         for (int i = 0; i < fieldNames.length; i++) {

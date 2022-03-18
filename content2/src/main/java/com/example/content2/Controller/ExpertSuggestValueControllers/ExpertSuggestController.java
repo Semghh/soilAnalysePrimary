@@ -1,6 +1,5 @@
 package com.example.content2.Controller.ExpertSuggestValueControllers;
 
-import com.example.content2.Mapper.ElementMapper;
 import com.example.content2.POJO.ExpertSuggestValue;
 import com.example.content2.POJO.Result;
 import com.example.content2.Service.CropTypesService;
@@ -8,7 +7,6 @@ import com.example.content2.Service.ElementService;
 import com.example.content2.Service.ExpertSuggestService;
 import com.example.content2.Service.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.example.content2.Util.*;
 
@@ -160,7 +158,7 @@ public class ExpertSuggestController {
     @PostMapping("/deleteExpertSuggests")
     public Result deleteById(@RequestBody HashMap map){
         try{
-            Integer id = (Integer) getFieldFromMap.getField(map,new String[]{"id"},new Class[]{Integer.class})[0];
+            Integer id = (Integer) getFieldFromMap.get(map,new String[]{"id"},new Class[]{Integer.class})[0];
             int i = expertSuggestService.deleteById(id);
             if (i==1){
                 return Result.getInstance(200,"删除成功",id);

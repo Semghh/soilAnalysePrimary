@@ -11,11 +11,13 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -31,6 +33,7 @@ public class MyBeans {
     }
 
     @Bean("defaultRedisTemplate")
+    @Primary
     public RedisTemplate<String,Object> getDefaultRedisTemplate(RedisConnectionFactory factory){
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
@@ -59,5 +62,9 @@ public class MyBeans {
         template.setEnableTransactionSupport(true);
 
         return template;
+    }
+
+    public RestTemplate restTemplate (){
+        return new RestTemplate();
     }
 }

@@ -1,6 +1,5 @@
 package com.example.content2.POJO;
 
-import com.sun.istack.internal.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

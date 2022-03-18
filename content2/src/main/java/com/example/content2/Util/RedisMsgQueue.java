@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 @Component
 public class RedisMsgQueue {
 
-    static int parallelSize = Runtime.getRuntime().availableProcessors() - 1;
+    static int parallelSize = Runtime.getRuntime().availableProcessors() + 1;
 
     private static ExecutorService executorService = Executors.newFixedThreadPool(parallelSize);
 

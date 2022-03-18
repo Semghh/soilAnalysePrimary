@@ -1,7 +1,6 @@
 package com.example.content2.Service.Impl;
 
 import com.example.content2.Mapper.UsersMapper;
-import com.example.content2.POJO.Peasant;
 import com.example.content2.POJO.Result;
 import com.example.content2.POJO.Users;
 import com.example.content2.Service.UsersService;
@@ -59,7 +58,7 @@ public class UsersServiceImpl implements UsersService {
         String[] strs = {"username", "password", "peasant_id", "roles"};
         Class[] clz = {String.class, String.class, Integer.class, String.class};
         try {
-            Object[] field = getFieldFromMap.getField(map, strs, clz);
+            Object[] field = getFieldFromMap.get(map, strs, clz);
             Users users = new Users(null,(String)field[0],(String)field[1],(Integer) field[2],(String)field[3]);
             int i = usersMapper.insertNewUser(users);
             if (i==1){
@@ -76,7 +75,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Result deleteUserById(HashMap map) {
         try {
-            Object[] field = getFieldFromMap.getField(map, new String[]{"id"}, new Class[]{Integer.class});
+            Object[] field = getFieldFromMap.get(map, new String[]{"id"}, new Class[]{Integer.class});
             int i = usersMapper.deleteUserById((Integer) field[0]);
             if (i==1){
                 return Result.getInstance(200,"删除成功",field[0]);
@@ -95,7 +94,7 @@ public class UsersServiceImpl implements UsersService {
         String[] strs = {"id", "password", "peasant_id", "roles"};
         Class[] clz = {Integer.class, String.class, Integer.class, String.class};
         try {
-            Object[] field = getFieldFromMap.getField(map, strs, clz);
+            Object[] field = getFieldFromMap.get(map, strs, clz);
             Users user = new Users();
             user.setId((Integer) field[0]);
             user.setPassword_((String) field[1]);

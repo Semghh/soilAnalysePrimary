@@ -19,7 +19,11 @@ public interface SuggestValueService {
     public Double selectSuggestValueWithExpert(Double longitude,Double latitude,
                                                Integer crop_typeId,String name_elementId,Double measured_value);
 
-    public Result fun1(String longitudeText, String latitudeText, String crop_name, HashMap params);
+    public Result fun1(String longitudeText,
+                       String latitudeText,
+                       String crop_name,
+                       HashMap<String,Object> params,
+                       String RemoteAddr,boolean isTourist);
 
     public ArrayList<HashMap<String,Object>> getSuggestValuesByLimit(int page, int size);
 
@@ -27,11 +31,11 @@ public interface SuggestValueService {
 
     public Integer getLatestId();
 
-    public Result insertNewSuggestValue(HashMap map);
+    public Result insertNewSuggestValue(HashMap<String,Object> map);
 
-    public Result deleteSuggestValue(HashMap map);
+    public Result deleteSuggestValue(HashMap<String,Object> map);
 
     public Integer getSuggestValueTotal();
 
-    public Result getExcelURl(HashMap map);
+    public Result getExcelURl(HashMap<String,Object> map);
 }

@@ -5,3 +5,11 @@ excelTemplate:
   serverIp: 120.79.189.55
   sleepTimeKeep: 1000*60*60*5
   outOfDateThreshold: 1000*60*60*24
+
+#开发环境
+
+spring:
+  redis:
+    port: 6300
+    host: 120.79.189.55
+    password: zxc,./123

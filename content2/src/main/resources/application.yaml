@@ -7,11 +7,6 @@ spring:
   profiles:
     active: dev
 
-#开发环境
-  redis:
-    port: 6300
-    host: 120.79.189.55
-    password: zxc,./123
 
 mybatis:
   type-aliases-package: com.example.content2.POJO
@@ -24,7 +19,7 @@ mybatis:
 #      password: 123456
 
 server:
-  port: 8000  #云端和本地均在8000
+  port: 8001  #云端和本地均在8000
   servlet:
     context-path: /content1-2.0
 

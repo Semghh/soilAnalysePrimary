@@ -12,9 +12,12 @@ import com.example.content2.Util.Execel.GenerateSmartCard;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -22,17 +25,21 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service("SuggestValueService")
 public class SuggestValueServiceImpl implements SuggestValueService {
-    private Log log = LogFactory.getLog(this.getClass());
-    private SuggestValueMapper suggestValueMapper;
-    private ExpertSuggestValueMapper expertSuggestValueMapper;
-    private CropTypesMapper cropTypesMapper;
-    private ElementMapper elementMapper;
-    private RegionMapper regionMapper;
-    private MeasuredValueMapper measuredValueMapper;
-    private ItemProperties itemProperties;
-    private GenerateSmartCard generateSmartCard;
+    private final Log log = LogFactory.getLog(this.getClass());
+    private final SuggestValueMapper suggestValueMapper;
+    private final ExpertSuggestValueMapper expertSuggestValueMapper;
+    private final CropTypesMapper cropTypesMapper;
+    private final ElementMapper elementMapper;
+    private final RegionMapper regionMapper;
+    private final MeasuredValueMapper measuredValueMapper;
+    private final ItemProperties itemProperties;
+    private final GenerateSmartCard generateSmartCard;
+    private final List<Fun1ResultMapHandle> chains;
 
-    private ConcurrentHashMap<File,Long> timerQueue;
+    @Resource(name = "defaultRedisTemplate")
+    private RedisTemplate<String,Object> redisTemplate;
+
+    private final ConcurrentHashMap<File,Long> timerQueue;
 
     @Value("${excelTemplate.serverIp}")
     private String serverIp;
@@ -44,8 +51,9 @@ public class SuggestValueServiceImpl implements SuggestValueService {
     public SuggestValueServiceImpl(SuggestValueMapper suggestValueMapper, MeasuredValueMapper measuredValueMapper,
                                    ExpertSuggestValueMapper expertSuggestValueMapper, CropTypesMapper cropTypesMapper,
                                    ElementMapper elementMapper, RegionMapper regionMapper,
-                                   ItemProperties itemProperties,GenerateSmartCard generateSmartCard,
-                                   ConcurrentHashMap<File,Long> timerQueue) {
+                                   ItemProperties itemProperties, GenerateSmartCard generateSmartCard,
+                                   @Qualifier("defaultHandleChain") List<Fun1ResultMapHandle> chains,
+                                   ConcurrentHashMap<File, Long> timerQueue) {
         this.suggestValueMapper = suggestValueMapper;
         this.expertSuggestValueMapper = expertSuggestValueMapper;
         this.cropTypesMapper = cropTypesMapper;
@@ -54,6 +62,7 @@ public class SuggestValueServiceImpl implements SuggestValueService {
         this.measuredValueMapper = measuredValueMapper;
         this.itemProperties = itemProperties;
         this.generateSmartCard = generateSmartCard;
+        this.chains = chains;
         this.timerQueue = timerQueue;
     }
 
@@ -63,7 +72,9 @@ public class SuggestValueServiceImpl implements SuggestValueService {
     }
 
     @Override
-    public Double selectSuggestValueWithExpert(Double longitude, Double latitude, Integer crop_typeId, String name_element, Double measured_value) {
+    public Double selectSuggestValueWithExpert(Double longitude, Double latitude,
+                                               Integer crop_typeId, String name_element,
+                                               Double measured_value) {
         Integer elementId = elementMapper.getElementIdByExpression(name_element);
 
         Double expertSuggestValue =
@@ -73,58 +84,74 @@ public class SuggestValueServiceImpl implements SuggestValueService {
                 suggestValueMapper.selectResult(crop_typeId, name_element, measured_value);
     }
 
-
+    /**
+     *
+     * fun1 函数执行逻辑如下:
+     *
+     * 是否是直接测量点->是-> 处理结果
+     *     ||
+     *     V
+     *    否 -> 代替寻找最近的测量点 -> 处理结果
+     *
+     *
+     * @param longitudeText  经度Text
+     * @param latitudeText   纬度text
+     * @param crop_name  作物名
+     * @param params     请求参数集合
+     * @param remoteAddr  路由地址
+     * @param isTourist  游客身份登录
+     */
     @Override
-    public Result fun1(String longitudeText, String latitudeText, String crop_name, HashMap params) {
-        Result result = null;
+    public Result fun1(String longitudeText,
+                       String latitudeText,
+                       String crop_name,
+                       HashMap<String,Object> params,
+                       String remoteAddr,boolean isTourist) {
+        Result result;
 
-        if ((result = passCheckParamLegality(longitudeText, latitudeText, crop_name, params)) != null) { //检查参数合法性
+
+        //检查参数合法性
+        if ((result = passCheckParamLegality(longitudeText, latitudeText, crop_name, params)) != null) {
             //未通过检查
             return result;
         }
-
-        Double longitude;
-        Double latitude;
+        //检查游客次数
+        if (!checkTouristQueryTime(remoteAddr,isTourist)) {
+            return Result.getInstance(210,"游客达到当日查询上限",null);
+        }
 
         //获取 Request中的经度纬度
-        latitude = Double.parseDouble(latitudeText);
-        longitude = Double.parseDouble(longitudeText);
+        Double longitude = Double.parseDouble(longitudeText);
+        Double latitude = Double.parseDouble(latitudeText);
+        //        log.info("用户输入的longitude : " + longitudeText + ",latitude : " + latitudeText + ",用户输入的typeName : " + crop_name);
 
-//        log.info("用户输入的longitude : " + longitudeText + ",latitude : " + latitudeText + ",用户输入的typeName : " + crop_name);
 
 
         Vector<String> names = itemProperties.getNameVector();//通过元素配置类，获取需要测量的元素名
-
         Integer crop_type = cropTypesMapper.getTypeIdByName(crop_name);//获得了作物id
+        HashMap<String, Object> resultMap = new HashMap<>();//存放显示数据的容器
+
+
         Region region = regionMapper.getRegionByLongitudeAndLatitude(longitude, latitude);//由经纬度查询测量点，可能为空
-        HashMap resultMap = new HashMap<String, Object>();//存放显示数据的容器
-
-
         if (region != null) {//是直接测量点
             resultMap.put("isDirectMeasured", "true");
 
             //处理最终结果
-            processResult(region, names,crop_type,resultMap);
+            processResult(region, names,crop_type,resultMap,remoteAddr,isTourist);
 
         } else {//是间接测量点
             resultMap.put("isDirectMeasured", "false");
 
             //查找最近测量点 作为代替.  核心算法getMinRegion()
-            Region min_region = getMinRegion(longitude, latitude);
-            Double min_Longitude = min_region.getLongitude();
-            Double min_Latitude = min_region.getLatitude();
 
-            resultMap.put("min_Longitude", min_Longitude);
-            resultMap.put("min_Latitude", min_Latitude);
-
-//            log.info("最近测量点为 : " + min_region);
-
+            Region min_region = new MinRegionHandle(regionMapper).getMinRegion(longitude,latitude);
+            //处理近似点结果
+            dealWithMinLocation(min_region.getLongitude(),min_region.getLatitude(),resultMap);
             //处理最终结果
-            processResult(min_region, names,crop_type,resultMap);
+            processResult(min_region, names,crop_type,resultMap,remoteAddr,isTourist);
         }
         log.info("查询出的Map ： " + resultMap);
         return Result.getInstance(200, "查询成功", resultMap);
-
     }
 
     @Override
@@ -149,9 +176,9 @@ public class SuggestValueServiceImpl implements SuggestValueService {
     @Override
     public Result updateSuggestValue(HashMap map) {
         String[] fieldNames = new String[]{"cropName","name_element","min_value","max_value","result","id"};
-        Class[] clz = new Class[]{String.class,String.class,Double.class, Double.class,Double.class,Integer.class};
+        Class<?>[] clz = new Class[]{String.class,String.class,Double.class, Double.class,Double.class,Integer.class};
         try {
-            Object[] field = getFieldFromMap.getField(map, fieldNames, clz);
+            Object[] field = getFieldFromMap.get(map, fieldNames, clz);
             SuggestValue suggestValue = new SuggestValue();
             Integer crop_type = cropTypesMapper.getTypeIdByName((String) field[0]);
             suggestValue.setCrop_type(crop_type);
@@ -178,12 +205,12 @@ public class SuggestValueServiceImpl implements SuggestValueService {
     }
 
     @Override
-    public Result insertNewSuggestValue(HashMap map) {
+    public Result insertNewSuggestValue(HashMap<String,Object> map) {
 
         String[] fieldNames = new String[]{"cropName","name_element","min_value","max_value","result"};
-        Class[] clz = new Class[]{String.class,String.class,Double.class, Double.class,Double.class};
+        Class<?>[] clz = new Class[]{String.class,String.class,Double.class, Double.class,Double.class};
         try {
-            Object[] field = getFieldFromMap.getField(map, fieldNames, clz);
+            Object[] field = getFieldFromMap.get(map, fieldNames, clz);
             for (Object o : field) {
                 if (o==null){
                     return Result.getInstance(500,"参数错误",map);
@@ -212,9 +239,9 @@ public class SuggestValueServiceImpl implements SuggestValueService {
 
 
     @Override
-    public Result deleteSuggestValue(HashMap map) {
+    public Result deleteSuggestValue(HashMap<String,Object> map) {
         try {
-            Object[] field = getFieldFromMap.getField(map, new String[]{"id"}, new Class[]{Integer.class});
+            Object[] field = getFieldFromMap.get(map, new String[]{"id"}, new Class[]{Integer.class});
             if (suggestValueMapper.isExistId((Integer) field[0])==1) {//是否存在id
                 int i = suggestValueMapper.deleteById((Integer) field[0]);//删除
                 if (i==1){
@@ -234,15 +261,28 @@ public class SuggestValueServiceImpl implements SuggestValueService {
         return suggestValueMapper.getSuggestValuesTotal();
     }
 
+    /**
+     *
+     * 生成Excel土壤指标卡
+     */
     @Override
-    public Result getExcelURl(HashMap map) {
+    public Result getExcelURl(HashMap<String,Object> map) {
 
-        String[] fieldNames = new String[]{"mea_Effective_N","mea_Olsen_P","mea_Olsen_K","mea_organic_matter","mea_ph"};
-        Class[] clz = new Class[]{Double.class,Double.class,Double.class,Double.class,Double.class};
+        String[] fieldNames = new String[]{"mea_Effective_N",
+                                            "mea_Olsen_P",
+                                            "mea_Olsen_K",
+                                            "mea_organic_matter",
+                                            "mea_ph"};
+        Class[] clz = new Class[]{Double.class,
+                                Double.class,
+                                Double.class,
+                                Double.class,
+                                Double.class};
+
         long l = System.currentTimeMillis();
         String path = indicatedPath+"/"+l+".xls";
         try {
-            Object[] field = getFieldFromMap.getField(map, fieldNames, clz);
+            Object[] field = getFieldFromMap.get(map, fieldNames, clz);
 
             try {
                 generateSmartCard.generateSmartCard1(path,field);
@@ -292,12 +332,16 @@ public class SuggestValueServiceImpl implements SuggestValueService {
      *
      * 例如 ： 返回建议值，返回测量值。
      *
-     * @param region
-     * @param names
-     * @param crop_type
-     * @param resultMap
+     * @param region 区域
+     * @param names 名称List
+     * @param crop_type 作物种类
+     * @param resultMap 返回容器
      */
-    private void processResult(Region region, Vector<String> names, Integer crop_type, HashMap resultMap) {
+    private void processResult(Region region, Vector<String> names,
+                               Integer crop_type,
+                               HashMap<String,Object> resultMap,
+                               String remoteAddr,
+                               boolean isTourist) {
 
         Long id_village = region.getId();//获取了村id
         MeasuredValue measuredValue = measuredValueMapper.selectById_village(id_village);//获取了这个村的土壤测量值
@@ -315,70 +359,41 @@ public class SuggestValueServiceImpl implements SuggestValueService {
 
         FormatAndOut formatAndOut = new FormatAndOut();
         formatAndOut.formatAndOut(resultMap, itemProperties.getNameVector(),meaValue,sugValue);
-//
-//
-//
-        String[] fieldNames = new String[]{
-                "sug_Olsen_K","sug_Olsen_P","sug_Effective_N"};
-        Class[] fieldClz = new Class[]{Double.class,Double.class,Double.class};
-        Object[] field = new Object[0];
-        try {
-            field = getFieldFromMap.getField(resultMap, fieldNames, fieldClz);
-        } catch (getFieldFromMap.notFoundSuchField notFoundSuchField) {
-            notFoundSuchField.printStackTrace();
-        }
 
-        Double K2SO4 = (Double)field[0] / 0.6;
 
-        Double KCL = (Double)field[0]/0.5;
+        //处理结果链
+        chains.forEach(x->x.resultMapHandle(resultMap));
 
-        Double erAn = (Double) field[1]/0.46;
 
-        Double niaoSu = ((Double) field[2]-erAn*0.16)/0.6;
-
-        resultMap.put("sug_K2SO4", DoubleFormat.format(2,K2SO4));
-        resultMap.put("sug_KCL", DoubleFormat.format(2,KCL));
-        resultMap.put("sug_erAn", DoubleFormat.format(2,erAn));
-        resultMap.put("sug_niaoSu", DoubleFormat.format(2,niaoSu));
+        dealWithTourist(remoteAddr,isTourist);
     }
 
+    private String getTouristKey(String remoteAddr,boolean isTourist){
+        return remoteAddr + "Count";
+    }
 
-    /**
-     * 核心算法: 获得最近测量点
-     *
-     * 测量点分布未知,用户输入未知
-     *
-     *
-     * @param longitude
-     * @param latitude
-     * @return
-     */
-    private Region getMinRegion(Double longitude, Double latitude) {
-        Double offset = 0.000100;//偏移量125.279689
-        Double longitude_low = longitude - offset;
-        Double longitude_high = longitude + offset;
-        Double latitude_low = latitude - offset;
-        Double latitude_high = latitude + offset;
-        List<Region> regions;
-        while (true) {
-            regions = regionMapper.selectOffsetRegion(longitude_low, longitude_high, latitude_low, latitude_high);
-            if (regions != null && regions.size() != 0) break;
-            offset *= 2;
-            longitude_low -= offset;
-            longitude_high += offset;
-            latitude_low -= offset;
-            latitude_high += offset;
+    private void dealWithTourist(String remoteAddr,boolean isTourist){
+        if (!isTourist)return;
+        String key = getTouristKey(remoteAddr,isTourist);
+        Object o = redisTemplate.opsForValue().get(key);
+        if (o==null){
+            redisTemplate.opsForValue().set(key,1);
+        }else {
+            redisTemplate.opsForValue().increment(key);
         }
-        Double min = Double.MAX_VALUE;
-        Region min_region = null;
-        for (Region r : regions) {
-            Double distance = Math.abs(r.getLongitude() - longitude) + Math.abs(r.getLatitude() - latitude);
-            if (distance < min) {
-                min = distance;
-                min_region = r;
-            }
+    }
+
+    private boolean checkTouristQueryTime(String remoteAddr,boolean isTourist){
+        if (!isTourist)return true;
+        String key = getTouristKey(remoteAddr,isTourist);
+        Object o = redisTemplate.opsForValue().get(key);
+        if (o==null)return true;
+        if (o instanceof Integer){
+            return (Integer)o<3;
+        }else if (o instanceof Long){
+            return (Long)o<3;
         }
-        return min_region;
+        return false;
     }
 
     /**
@@ -446,6 +461,13 @@ public class SuggestValueServiceImpl implements SuggestValueService {
     }
 
 
+    private void dealWithMinLocation(Double min_Longitude,
+                                     Double min_Latitude,
+                                     HashMap<String,Object> resultMap){
+        resultMap.put("min_Longitude", min_Longitude);
+        resultMap.put("min_Latitude", min_Latitude);
+    }
+
     /**
      *
      * 内部配置类
@@ -492,5 +514,66 @@ public class SuggestValueServiceImpl implements SuggestValueService {
             return res;
         }
 
+    }
+
+
+    /**
+     * 核心类,用于找到最近测量点
+     *
+     * 数据库中测量点未知，用户输入未知
+     */
+    public static class MinRegionHandle{
+
+        private final RegionMapper regionMapper;
+
+        public MinRegionHandle(RegionMapper regionMapper) {
+            this.regionMapper = regionMapper;
+        }
+
+        private double offset = 0.000100;
+        private int magnification = 2;
+        private int appendTimes =0;
+
+        public void setOffset(double offset) {
+            this.offset = offset;
+        }
+
+
+        public void setMagnification(int magnification) {
+            this.magnification = magnification;
+        }
+
+        public int getAppendTimes() {
+            return appendTimes;
+        }
+
+        public Region getMinRegion(Double longitude, Double latitude) {
+            double longitude_low = longitude - offset;
+            double longitude_high = longitude + offset;
+            double latitude_low = latitude - offset;
+            double latitude_high = latitude + offset;
+            List<Region> regions;
+            appendTimes=0;
+            while (true) {
+                regions = regionMapper.selectOffsetRegion(longitude_low, longitude_high, latitude_low, latitude_high);
+                appendTimes++;
+                if (regions != null && regions.size() != 0) break;
+                offset *= magnification;
+                longitude_low -= offset;
+                longitude_high += offset;
+                latitude_low -= offset;
+                latitude_high += offset;
+            }
+            double min = Double.MAX_VALUE;
+            Region min_region = null;
+            for (Region r : regions) {
+                double distance = Math.abs(r.getLongitude() - longitude) + Math.abs(r.getLatitude() - latitude);
+                if (distance < min) {
+                    min = distance;
+                    min_region = r;
+                }
+            }
+            return min_region;
+        }
     }
 }

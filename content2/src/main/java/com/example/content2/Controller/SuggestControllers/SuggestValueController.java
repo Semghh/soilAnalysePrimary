@@ -37,11 +37,11 @@ public class SuggestValueController {
     }
 
     @PostMapping("/update")
-    public Result updateSuggestValue(@RequestBody HashMap map){
+    public Result updateSuggestValue(@RequestBody HashMap<String,Object> map){
         return suggestValueService.updateSuggestValue(map);
     }
     @PostMapping("/insert")
-    public Result insertSuggestValue(@RequestBody HashMap map){
+    public Result insertSuggestValue(@RequestBody HashMap<String,Object> map){
         return suggestValueService.insertNewSuggestValue(map);
     }
 
@@ -57,7 +57,7 @@ public class SuggestValueController {
     }
 
     @PostMapping("/excel")
-    public Result getExcel(@RequestBody HashMap map){
+    public Result getExcel(@RequestBody HashMap<String,Object> map){
         return suggestValueService.getExcelURl(map);
     }
 

@@ -5,13 +5,16 @@ import com.example.content2.POJO.Result;
 import com.example.content2.Service.CropTypesService;
 import com.example.content2.Service.SuggestValueService;
 
+import com.example.content2.Util.StringUtil;
+import com.example.content2.Util.getFieldFromMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Vector;
 
 @RestController
@@ -22,32 +25,31 @@ public class Fun1Controller {
     private CropTypesService cropTypesService;
 
     @Autowired
-    public Fun1Controller( CropTypesService cropTypesService, SuggestValueService suggestValueService) {
+    public Fun1Controller(CropTypesService cropTypesService, SuggestValueService suggestValueService) {
         this.suggestValueService = suggestValueService;
         this.cropTypesService = cropTypesService;
     }
 
-    @PostMapping("/fun1")
-    public Result postFun1(@RequestBody HashMap bodyParams) {
-            String longitudeText = (String) bodyParams.get("longitude");
-            String latitudeText = (String) bodyParams.get("latitude");
-            String crop_name = (String) bodyParams.get("cropName");
-            return suggestValueService.fun1(longitudeText, latitudeText, crop_name, bodyParams);
-    }
-    @GetMapping("/fun1")
-    public Result getFun1(@RequestParam HashMap urlParams) {
-        synchronized (this){
-            String longitudeText = (String) urlParams.get("longitude");
-            String latitudeText = (String) urlParams.get("latitude");
-            String crop_name = (String) urlParams.get("cropName");
-            return suggestValueService.fun1(longitudeText, latitudeText, crop_name, urlParams);
-        }
+    @RequestMapping("/fun1")
+    public Result postFun1(@RequestParam HashMap bodyParams, HttpSession session, HttpServletRequest request) throws getFieldFromMap.notFoundSuchField {
+
+        String[] paramNames = new String[]{"longitude","latitude","cropName","loginResult"};
+        Class[] clz = new Class[]{String.class,String.class,String.class,String.class};
+        Object[] o = getFieldFromMap.get(bodyParams, paramNames, clz);
+
+        if (o[3]==null || !o[3].equals("true"))
+            return Result.getInstance(409,"请先登录",null);
+
+        String remoteAddr = request.getRemoteAddr();
+        boolean isTourist = false;
+        if (StringUtil.NotAllAndEquals((String) session.getAttribute("roles"),"tourist"))isTourist = true;
+        return suggestValueService.fun1((String)o[0], (String)o[1], (String)o[2], bodyParams,remoteAddr,isTourist);
     }
 
     @GetMapping("/getEnableCropTypeName")
-    public Result getAllEnableCropTypeName(){
+    public Result getAllEnableCropTypeName() {
         Vector<String> allEnableCropName = cropTypesService.getAllEnableCropName();
-        return Result.getInstance(200,"获取成功!",allEnableCropName.toArray());
+        return Result.getInstance(200, "获取成功!", allEnableCropName.toArray());
     }
 
 
