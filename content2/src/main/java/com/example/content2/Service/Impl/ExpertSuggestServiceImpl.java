@@ -1,19 +1,16 @@
 package com.example.content2.Service.Impl;
 
-import com.example.content2.Mapper.CropTypesMapper;
-import com.example.content2.Mapper.ElementMapper;
-import com.example.content2.Mapper.ExpertSuggestValueMapper;
-import com.example.content2.Mapper.RegionMapper;
-import com.example.content2.POJO.ExpertSuggestValue;
-import com.example.content2.POJO.Result;
-import com.example.content2.Service.ElementService;
+import com.example.content2.Mapper.Primary.CropTypesMapper;
+import com.example.content2.Mapper.Primary.ElementMapper;
+import com.example.content2.Mapper.Primary.ExpertSuggestValueMapper;
+import com.example.content2.Mapper.Primary.RegionMapper;
+import com.example.content2.POJO.SoilAnalyse.ExpertSuggestValue;
+import com.example.content2.POJO.SoilAnalyse.Result;
 import com.example.content2.Service.ExpertSuggestService;
-import com.example.content2.Service.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 

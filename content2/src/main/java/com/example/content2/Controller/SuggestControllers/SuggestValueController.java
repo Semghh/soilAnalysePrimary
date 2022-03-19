@@ -1,10 +1,9 @@
 package com.example.content2.Controller.SuggestControllers;
 
-import com.example.content2.POJO.Result;
+import com.example.content2.POJO.SoilAnalyse.Result;
 import com.example.content2.Service.SuggestValueService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

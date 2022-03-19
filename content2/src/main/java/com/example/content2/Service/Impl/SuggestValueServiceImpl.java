@@ -1,11 +1,11 @@
 package com.example.content2.Service.Impl;
 
 
-import com.example.content2.Mapper.*;
-import com.example.content2.POJO.MeasuredValue;
-import com.example.content2.POJO.Region;
-import com.example.content2.POJO.Result;
-import com.example.content2.POJO.SuggestValue;
+import com.example.content2.Mapper.Primary.*;
+import com.example.content2.POJO.SoilAnalyse.MeasuredValue;
+import com.example.content2.POJO.SoilAnalyse.Region;
+import com.example.content2.POJO.SoilAnalyse.Result;
+import com.example.content2.POJO.SoilAnalyse.SuggestValue;
 import com.example.content2.Service.SuggestValueService;
 import com.example.content2.Util.*;
 import com.example.content2.Util.Execel.GenerateSmartCard;
@@ -84,6 +84,9 @@ public class SuggestValueServiceImpl implements SuggestValueService {
                 suggestValueMapper.selectResult(crop_typeId, name_element, measured_value);
     }
 
+
+
+
     /**
      *
      * fun1 函数执行逻辑如下:
@@ -97,7 +100,6 @@ public class SuggestValueServiceImpl implements SuggestValueService {
      * @param longitudeText  经度Text
      * @param latitudeText   纬度text
      * @param crop_name  作物名
-     * @param params     请求参数集合
      * @param remoteAddr  路由地址
      * @param isTourist  游客身份登录
      */
@@ -105,13 +107,13 @@ public class SuggestValueServiceImpl implements SuggestValueService {
     public Result fun1(String longitudeText,
                        String latitudeText,
                        String crop_name,
-                       HashMap<String,Object> params,
-                       String remoteAddr,boolean isTourist) {
+                       String remoteAddr,
+                       boolean isTourist) {
         Result result;
 
 
         //检查参数合法性
-        if ((result = passCheckParamLegality(longitudeText, latitudeText, crop_name, params)) != null) {
+        if ((result = passCheckParamLegality(longitudeText, latitudeText, crop_name)) != null) {
             //未通过检查
             return result;
         }
@@ -313,16 +315,15 @@ public class SuggestValueServiceImpl implements SuggestValueService {
      * @param longitudeText 经度字符串
      * @param latitudeText 纬度字符串
      * @param crop_name 作物名称
-     * @param params 返回容器
      * @return 封装结果
      */
-    private Result passCheckParamLegality(String longitudeText, String latitudeText, String crop_name, HashMap params) {
+    private Result passCheckParamLegality(String longitudeText, String latitudeText, String crop_name) {
         if (!StringLengthGreaterThanZero.judge(longitudeText) || !judgeOnlyNumber.judgeOnlyNumber(longitudeText))
-            return Result.getInstance(400, "经度(longitude)参数错误", params);
+            return Result.getInstance(400, "经度(longitude)参数错误", null);
         if (!StringLengthGreaterThanZero.judge(latitudeText) || !judgeOnlyNumber.judgeOnlyNumber(latitudeText))
-            return Result.getInstance(400, "纬度(latitude)参数错误", params);
+            return Result.getInstance(400, "纬度(latitude)参数错误", null);
         if (!StringLengthGreaterThanZero.judge(crop_name))
-            return Result.getInstance(400, "作物(cropName)参数错误", params);
+            return Result.getInstance(400, "作物(cropName)参数错误", null);
         return null;
     }
 
@@ -533,14 +534,22 @@ public class SuggestValueServiceImpl implements SuggestValueService {
         private double offset = 0.000100;
         private int magnification = 2;
         private int appendTimes =0;
+        private int regionSize = 0;
 
         public void setOffset(double offset) {
             this.offset = offset;
         }
 
-
         public void setMagnification(int magnification) {
             this.magnification = magnification;
+        }
+
+        public double getOffset() {
+            return offset;
+        }
+
+        public int getMagnification() {
+            return magnification;
         }
 
         public int getAppendTimes() {
@@ -566,6 +575,7 @@ public class SuggestValueServiceImpl implements SuggestValueService {
             }
             double min = Double.MAX_VALUE;
             Region min_region = null;
+            regionSize = regions.size();
             for (Region r : regions) {
                 double distance = Math.abs(r.getLongitude() - longitude) + Math.abs(r.getLatitude() - latitude);
                 if (distance < min) {

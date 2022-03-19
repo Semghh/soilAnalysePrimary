@@ -1,7 +1,7 @@
 package com.example.content2.Controller.FunctionControllers;
 
 
-import com.example.content2.POJO.Result;
+import com.example.content2.POJO.SoilAnalyse.Result;
 import com.example.content2.Service.CropTypesService;
 import com.example.content2.Service.SuggestValueService;
 
@@ -33,17 +33,17 @@ public class Fun1Controller {
     @RequestMapping("/fun1")
     public Result postFun1(@RequestParam HashMap bodyParams, HttpSession session, HttpServletRequest request) throws getFieldFromMap.notFoundSuchField {
 
-        String[] paramNames = new String[]{"longitude","latitude","cropName","loginResult"};
-        Class[] clz = new Class[]{String.class,String.class,String.class,String.class};
+        String[] paramNames = new String[]{"longitude","latitude","cropName"};
+        Class[] clz = new Class[]{String.class,String.class,String.class};
         Object[] o = getFieldFromMap.get(bodyParams, paramNames, clz);
-
-        if (o[3]==null || !o[3].equals("true"))
+        String loginResult = (String) session.getAttribute("loginResult");
+        if (loginResult==null || !loginResult.equals("true"))
             return Result.getInstance(409,"请先登录",null);
 
         String remoteAddr = request.getRemoteAddr();
         boolean isTourist = false;
         if (StringUtil.NotAllAndEquals((String) session.getAttribute("roles"),"tourist"))isTourist = true;
-        return suggestValueService.fun1((String)o[0], (String)o[1], (String)o[2], bodyParams,remoteAddr,isTourist);
+        return suggestValueService.fun1((String)o[0], (String)o[1], (String)o[2],remoteAddr,isTourist);
     }
 
     @GetMapping("/getEnableCropTypeName")

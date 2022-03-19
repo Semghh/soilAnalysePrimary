@@ -1,7 +1,7 @@
 package com.example.content2.Controller.UserControllers;
 
-import com.example.content2.POJO.Result;
-import com.example.content2.POJO.Users;
+import com.example.content2.POJO.SoilAnalyse.Result;
+import com.example.content2.POJO.SoilAnalyse.Users;
 import com.example.content2.Service.UsersService;
 import com.example.content2.Util.StringLengthGreaterThanZero;
 import com.example.content2.Util.TokenStore;

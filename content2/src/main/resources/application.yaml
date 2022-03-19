@@ -1,11 +1,22 @@
 spring:
-  datasource:
+  profiles:
+    active: dev
+
+
+datasource:
+  primary:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/content2?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
     username: root
     password: zxc,./123
-  profiles:
-    active: dev
+  secondary:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/fun1calculate?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: root
+    password: zxc,./123
+
+
+
 
 
 mybatis:

@@ -1,21 +1,18 @@
 package com.example.content2.Controller.UserControllers;
 
-import com.example.content2.POJO.Peasant;
-import com.example.content2.POJO.Result;
-import com.example.content2.POJO.Users;
+import com.example.content2.POJO.SoilAnalyse.Peasant;
+import com.example.content2.POJO.SoilAnalyse.Result;
+import com.example.content2.POJO.SoilAnalyse.Users;
 import com.example.content2.Service.Impl.PeasantServiceImpl;
 import com.example.content2.Service.Impl.UsersServiceImpl;
 
 import com.example.content2.Util.CheckId_cardLegality;
 import com.example.content2.Util.StringLengthGreaterThanZero;
-import com.google.gson.Gson;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 @RestController

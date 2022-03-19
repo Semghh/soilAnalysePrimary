@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.content2.Mapper.Secondary.CalculateMapper">
+
+    <insert id="insertNewCalculateRecord">
+        insert into ${tableName}
+        (`longitude`,`latitude` ,`offset`,`magnification`,`response`,`is_direct`,`append_time`,
+         `database_date`,`calculate_date`)
+        values (#{cr.longitude},#{cr.latitude},#{cr.offset},#{cr.magnification},
+                #{cr.response},#{cr.is_direct},#{cr.append_time},#{cr.database_date},#{cr.calculate_date});
+    </insert>
+    <update id="createCalculateTable">
+        CREATE TABLE ${tableName}(
+        `id` bigint auto_increment,
+        `database_date` bigint,
+        `calculate_date` bigint,
+        `longitude` double(9,6),
+        `latitude` double(9,6),
+        `offset` double(9,6),
+        `magnification` int,
+        `response` bigint,
+        `append_time` int,
+        `is_direct` int,
+        PRIMARY KEY(`id`));
+    </update>
+    <select id="showTable" resultType="java.lang.String">
+        show tables like #{tableName}
+    </select>
+</mapper>

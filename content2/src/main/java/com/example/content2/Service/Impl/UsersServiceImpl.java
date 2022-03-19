@@ -1,8 +1,8 @@
 package com.example.content2.Service.Impl;
 
-import com.example.content2.Mapper.UsersMapper;
-import com.example.content2.POJO.Result;
-import com.example.content2.POJO.Users;
+import com.example.content2.Mapper.Primary.UsersMapper;
+import com.example.content2.POJO.SoilAnalyse.Result;
+import com.example.content2.POJO.SoilAnalyse.Users;
 import com.example.content2.Service.UsersService;
 //import com.example.content2.Util.BCrypt;
 import com.example.content2.Util.getFieldFromMap;

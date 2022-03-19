@@ -1,7 +1,7 @@
 package com.example.content2.Controller.MenuControllers;
 
-import com.example.content2.POJO.Menu;
-import com.example.content2.POJO.Result;
+import com.example.content2.POJO.SoilAnalyse.Menu;
+import com.example.content2.POJO.SoilAnalyse.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.DependsOn;

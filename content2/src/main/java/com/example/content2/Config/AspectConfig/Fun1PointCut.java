@@ -1,14 +1,12 @@
 package com.example.content2.Config.AspectConfig;
 
-import com.example.content2.POJO.Fun1Cost;
+import com.example.content2.POJO.SoilAnalyse.Fun1Cost;
 import com.example.content2.Service.Fun1CostService;
 import com.example.content2.Util.RedisMsgQueue;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 

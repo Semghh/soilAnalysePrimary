@@ -1,9 +1,9 @@
 package com.example.content2.Service.Impl;
 
 
-import com.example.content2.Mapper.MenuStoreTableMapper;
-import com.example.content2.POJO.Menu;
-import com.example.content2.POJO.MenuStoreTable;
+import com.example.content2.Mapper.Primary.MenuStoreTableMapper;
+import com.example.content2.POJO.SoilAnalyse.Menu;
+import com.example.content2.POJO.SoilAnalyse.MenuStoreTable;
 import com.example.content2.Service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

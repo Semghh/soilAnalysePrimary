@@ -24,6 +24,7 @@ public class Main {
         System.out.println(1231);
     }
 
+
     @Test
     public void test2(){
         String s = "98889*44*100";
@@ -43,6 +44,5 @@ public class Main {
         UUID uuid = UUID.randomUUID();
         System.out.println(uuid);
     }
-
 
 }

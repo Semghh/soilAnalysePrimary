@@ -1,7 +1,7 @@
 package com.example.content2.Service;
 
 
-import com.example.content2.POJO.Menu;
+import com.example.content2.POJO.SoilAnalyse.Menu;
 
 import java.util.ArrayList;
 

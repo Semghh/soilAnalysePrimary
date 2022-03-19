@@ -1,6 +1,6 @@
 package com.example.content2.Service.Impl;
 
-import com.example.content2.Mapper.CropTypesMapper;
+import com.example.content2.Mapper.Primary.CropTypesMapper;
 import com.example.content2.Service.CropTypesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

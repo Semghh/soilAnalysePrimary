@@ -1,7 +1,6 @@
 package com.example.content2.Service;
 
-import com.example.content2.POJO.Region;
-import org.apache.ibatis.annotations.Param;
+import com.example.content2.POJO.SoilAnalyse.Region;
 
 import java.util.ArrayList;
 

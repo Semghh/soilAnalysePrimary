@@ -1,8 +1,7 @@
 package com.example.content2.Config.AspectConfig;
 
-import com.example.content2.Annotation.MonitorQuery;
 import com.example.content2.Annotation.QueryName;
-import com.example.content2.POJO.QueryKeepTime;
+import com.example.content2.POJO.SoilAnalyse.QueryKeepTime;
 import com.example.content2.Service.QueryKeepTimeService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -26,7 +25,7 @@ public class MapperPointCut {
     private QueryKeepTimeService queryKeepTimeService;
 
     @Pointcut(value = "execution(public * com.example.content2.Mapper.*.*(..)) &&" +
-            "!execution(public * com.example.content2.Mapper.QueryKeepTimeMapper.*(..)) && "+
+            "!execution(public * com.example.content2.Mapper.Primary.QueryKeepTimeMapper.*(..)) && "+
             "@annotation(com.example.content2.Annotation.MonitorQuery)")
     private void pointCut(){};
 

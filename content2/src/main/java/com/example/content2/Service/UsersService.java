@@ -1,8 +1,7 @@
 package com.example.content2.Service;
 
-import com.example.content2.POJO.Peasant;
-import com.example.content2.POJO.Result;
-import com.example.content2.POJO.Users;
+import com.example.content2.POJO.SoilAnalyse.Result;
+import com.example.content2.POJO.SoilAnalyse.Users;
 
 import java.util.ArrayList;
 import java.util.HashMap;

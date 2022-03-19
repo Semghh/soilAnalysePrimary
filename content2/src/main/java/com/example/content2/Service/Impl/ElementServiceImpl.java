@@ -1,12 +1,10 @@
 package com.example.content2.Service.Impl;
 
-import com.example.content2.Mapper.ElementMapper;
-import com.example.content2.POJO.Element;
+import com.example.content2.Mapper.Primary.ElementMapper;
+import com.example.content2.POJO.SoilAnalyse.Element;
 import com.example.content2.Service.ElementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Vector;
 
 @Service("ElementService")
 public class ElementServiceImpl implements ElementService {

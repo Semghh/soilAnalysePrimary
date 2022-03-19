@@ -1,6 +1,6 @@
 package com.example.content2.Service;
 
-import com.example.content2.POJO.Fun1Cost;
+import com.example.content2.POJO.SoilAnalyse.Fun1Cost;
 
 public interface Fun1CostService {
 

@@ -1,9 +1,7 @@
 package com.example.content2.Service;
 
-import com.example.content2.POJO.ExpertSuggestValue;
-import com.example.content2.POJO.Result;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Service;
+import com.example.content2.POJO.SoilAnalyse.ExpertSuggestValue;
+import com.example.content2.POJO.SoilAnalyse.Result;
 
 import java.util.ArrayList;
 import java.util.HashMap;

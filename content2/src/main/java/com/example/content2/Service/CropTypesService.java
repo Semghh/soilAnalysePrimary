@@ -1,7 +1,7 @@
 package com.example.content2.Service;
 
 
-import com.example.content2.Mapper.CropTypesMapper;
+import com.example.content2.Mapper.Primary.CropTypesMapper;
 
 import java.util.Vector;
 

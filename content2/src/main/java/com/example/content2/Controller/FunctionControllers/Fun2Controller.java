@@ -1,10 +1,9 @@
 package com.example.content2.Controller.FunctionControllers;
 
-import com.example.content2.POJO.Result;
+import com.example.content2.POJO.SoilAnalyse.Result;
 import com.example.content2.Service.CropTypesService;
 import com.example.content2.Service.SuggestValueService;
 import com.example.content2.Util.FormatAndOut;
-import com.example.content2.Util.PostGetParams;
 import com.example.content2.Util.StringLengthGreaterThanZero;
 import com.example.content2.Util.judgeOnlyNumber;
 import org.apache.commons.logging.Log;

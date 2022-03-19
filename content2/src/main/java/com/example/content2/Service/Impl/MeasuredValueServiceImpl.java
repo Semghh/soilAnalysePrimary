@@ -1,7 +1,7 @@
 package com.example.content2.Service.Impl;
 
-import com.example.content2.Mapper.MeasuredValueMapper;
-import com.example.content2.POJO.MeasuredValue;
+import com.example.content2.Mapper.Primary.MeasuredValueMapper;
+import com.example.content2.POJO.SoilAnalyse.MeasuredValue;
 import com.example.content2.Service.MeasuredValueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

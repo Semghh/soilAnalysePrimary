@@ -1,7 +1,7 @@
 package com.example.content2.Service;
 
 
-import com.example.content2.POJO.QueryKeepTime;
+import com.example.content2.POJO.SoilAnalyse.QueryKeepTime;
 
 public interface QueryKeepTimeService {
 

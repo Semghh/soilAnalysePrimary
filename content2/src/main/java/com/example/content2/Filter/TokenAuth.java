@@ -1,7 +1,7 @@
 package com.example.content2.Filter;
 
 
-import com.example.content2.POJO.Result;
+import com.example.content2.POJO.SoilAnalyse.Result;
 import com.example.content2.Util.TokenStore;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component

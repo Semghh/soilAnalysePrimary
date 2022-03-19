@@ -1,6 +1,6 @@
 package com.example.content2.Config.BeanConfig;
 
-import com.example.content2.POJO.Menu;
+import com.example.content2.POJO.SoilAnalyse.Menu;
 import com.example.content2.Service.Impl.MenuServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

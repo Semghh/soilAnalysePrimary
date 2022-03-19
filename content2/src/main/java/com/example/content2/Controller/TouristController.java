@@ -1,7 +1,6 @@
 package com.example.content2.Controller;
 
-import com.example.content2.POJO.Result;
-import org.springframework.http.HttpRequest;
+import com.example.content2.POJO.SoilAnalyse.Result;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

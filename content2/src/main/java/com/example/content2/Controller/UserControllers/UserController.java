@@ -1,6 +1,6 @@
 package com.example.content2.Controller.UserControllers;
 
-import com.example.content2.POJO.Result;
+import com.example.content2.POJO.SoilAnalyse.Result;
 import com.example.content2.Service.UsersService;
 import org.springframework.web.bind.annotation.*;
 

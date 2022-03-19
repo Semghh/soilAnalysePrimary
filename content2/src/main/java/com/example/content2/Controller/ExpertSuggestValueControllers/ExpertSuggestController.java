@@ -1,7 +1,7 @@
 package com.example.content2.Controller.ExpertSuggestValueControllers;
 
-import com.example.content2.POJO.ExpertSuggestValue;
-import com.example.content2.POJO.Result;
+import com.example.content2.POJO.SoilAnalyse.ExpertSuggestValue;
+import com.example.content2.POJO.SoilAnalyse.Result;
 import com.example.content2.Service.CropTypesService;
 import com.example.content2.Service.ElementService;
 import com.example.content2.Service.ExpertSuggestService;

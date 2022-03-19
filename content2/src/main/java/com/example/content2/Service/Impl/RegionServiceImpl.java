@@ -1,7 +1,7 @@
 package com.example.content2.Service.Impl;
 
-import com.example.content2.Mapper.RegionMapper;
-import com.example.content2.POJO.Region;
+import com.example.content2.Mapper.Primary.RegionMapper;
+import com.example.content2.POJO.SoilAnalyse.Region;
 import com.example.content2.Service.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

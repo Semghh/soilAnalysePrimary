@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.content2.Mapper.Primary.MenuStoreTableMapper">
+    <insert id="insertNewMenuStore">
+        insert into `menu_store_table`
+        (`id`,`name`,`url`,`icon`,`children`,`type`)
+        values (#{id},#{name},#{url},#{icon},#{children},#{type})
+    </insert>
+
+    <select id="getMenuStoreById" resultType="com.example.content2.POJO.SoilAnalyse.MenuStoreTable">
+        select *
+        from `menu_store_table`
+        where `id`=#{id}
+        limit 1
+    </select>
+    <select id="isExistMenuById" resultType="java.lang.Integer">
+        select count(*)
+        from `menu_store_table`
+        where `id`=#{id}
+        limit 1
+    </select>
+</mapper>

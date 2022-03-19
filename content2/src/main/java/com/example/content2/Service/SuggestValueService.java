@@ -1,7 +1,6 @@
 package com.example.content2.Service;
 
-import com.example.content2.POJO.Result;
-import com.example.content2.POJO.SuggestValue;
+import com.example.content2.POJO.SoilAnalyse.Result;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +21,6 @@ public interface SuggestValueService {
     public Result fun1(String longitudeText,
                        String latitudeText,
                        String crop_name,
-                       HashMap<String,Object> params,
                        String RemoteAddr,boolean isTourist);
 
     public ArrayList<HashMap<String,Object>> getSuggestValuesByLimit(int page, int size);

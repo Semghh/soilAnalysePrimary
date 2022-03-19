@@ -1,7 +1,7 @@
 package com.example.content2.Service.Impl;
 
-import com.example.content2.Mapper.PeasantMapper;
-import com.example.content2.POJO.Peasant;
+import com.example.content2.Mapper.Primary.PeasantMapper;
+import com.example.content2.POJO.SoilAnalyse.Peasant;
 import com.example.content2.Service.PeasantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
