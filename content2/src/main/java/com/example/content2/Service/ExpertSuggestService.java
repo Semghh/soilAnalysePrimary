@@ -9,24 +9,24 @@ import java.util.HashMap;
 
 public interface ExpertSuggestService {
 
-    public Double getExpertSuggestValue(Double longitude, Double latitude,
+     Double getExpertSuggestValue(Double longitude, Double latitude,
                                         Integer elementId, Integer cropTypeId);
 
-    public int insertNewExpertSuggestValue(ExpertSuggestValue expertSuggestValue);
+     int insertNewExpertSuggestValue(ExpertSuggestValue expertSuggestValue);
 
-    public Result insertNewExpertSuggest(ExpertSuggestValue expertSuggestValue);
+     Result insertNewExpertSuggest(ExpertSuggestValue expertSuggestValue);
 
-    public Result insertNewExpertSuggests(Double latitude, Double longitude, String cropName, HashMap<String,Double >nameAndValue );
+     Result insertNewExpertSuggests(Double latitude, Double longitude, String cropName, HashMap<String,Double >nameAndValue );
 
-    public boolean isExistSuggestValue(Double longitude, Double latitude, Integer elementId, Integer cropTypeId);
+     boolean isExistSuggestValue(Double longitude, Double latitude, Integer elementId, Integer cropTypeId);
 
-    public boolean isExistSuggestValueByBean(ExpertSuggestValue expertSuggestValue);
+     boolean isExistSuggestValueByBean(ExpertSuggestValue expertSuggestValue);
 
-    public int updateSuggestValue(ExpertSuggestValue expertSuggestValue);
+     int updateSuggestValue(ExpertSuggestValue expertSuggestValue);
 
-    public ArrayList<ExpertSuggestValue> getExpertSuggestValueByLimit(Integer page,Integer size);
+     ArrayList<ExpertSuggestValue> getExpertSuggestValueByLimit(Integer page,Integer size);
 
-    public int deleteById(Integer id);
+     int deleteById(Integer id);
 
-    public Integer getExpertValueTotal();
+     Integer getExpertValueTotal();
 }

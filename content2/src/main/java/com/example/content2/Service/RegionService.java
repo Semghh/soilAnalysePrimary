@@ -6,19 +6,19 @@ import java.util.ArrayList;
 
 public interface RegionService {
 
-    public int delete(Region region);
+     int delete(Region region);
 
-    public Region selectById_county(Region region);
+     Region selectById_county(Region region);
 
-    public Integer getLastestNumberFromRegion();
+     Integer getLastestNumberFromRegion();
 
-    public int insertPartly(Region r);
+     int insertPartly(Region r);
 
-    public Region getRegionByLongitudeAndLatitude(Double Longitude, Double Latitude);
+     Region getRegionByLongitudeAndLatitude(Double Longitude, Double Latitude);
 
-    public ArrayList<Region> selectOffsetRegion(Double longitude_low, Double longitude_high, Double latitude_low,
+     ArrayList<Region> selectOffsetRegion(Double longitude_low, Double longitude_high, Double latitude_low,
                                                 Double latitude_high);
-    public int updatePartly(Region r);
+     int updatePartly(Region r);
 
-    public boolean isExistRegionByLatLong(Double longitude,Double latitude);
+     boolean isExistRegionByLatLong(Double longitude,Double latitude);
 }

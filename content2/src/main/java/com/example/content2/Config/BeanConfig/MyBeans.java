@@ -22,7 +22,7 @@ public class MyBeans {
 
     @Bean("tokenMapping")
     public ConcurrentHashMap<String, TokenStore> getTokenMapping(){
-        return new ConcurrentHashMap<String, TokenStore>();
+        return new ConcurrentHashMap<>();
     }
 
     @Bean("defaultRedisTemplate")
@@ -57,6 +57,7 @@ public class MyBeans {
         return template;
     }
 
+    @Bean
     public RestTemplate restTemplate (){
         return new RestTemplate();
     }

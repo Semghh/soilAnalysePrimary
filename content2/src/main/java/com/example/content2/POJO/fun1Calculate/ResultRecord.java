@@ -17,6 +17,7 @@ public class ResultRecord {
     private Double average_append_times;
     private Long average_response;
     private Long loop_times;
+    private Long average_region_size;
 
 
 

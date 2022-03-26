@@ -1,7 +1,9 @@
 package com.example.content2.Mapper.Secondary;
 
 import com.example.content2.POJO.fun1Calculate.CalculateRecord;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
 
 public interface CalculateMapper {
 

@@ -10,9 +10,9 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>content2</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.0.5-SNAPSHOT</version>
     <name>content2</name>
-    <description>soil analyse</description>
+    <description>soil analyse更新Offset测试</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>

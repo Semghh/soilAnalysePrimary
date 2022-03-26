@@ -6,7 +6,7 @@ import com.example.content2.Annotation.QueryName;
 import com.example.content2.POJO.SoilAnalyse.MenuStoreTable;
 import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
+
 public interface MenuStoreTableMapper {
 
     @MonitorQuery

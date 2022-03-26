@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service("MeasuredValueService")
 public class MeasuredValueServiceImpl implements MeasuredValueService {
 
-    private MeasuredValueMapper measuredValueMapper;
+    private final MeasuredValueMapper measuredValueMapper;
 
     @Autowired
     public MeasuredValueServiceImpl(MeasuredValueMapper measuredValueMapper) {

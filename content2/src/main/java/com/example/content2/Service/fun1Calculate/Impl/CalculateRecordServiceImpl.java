@@ -5,12 +5,16 @@ import com.example.content2.Mapper.Secondary.CalculateMapper;
 import com.example.content2.Mapper.Secondary.RecordMapper;
 import com.example.content2.POJO.SoilAnalyse.MeaPoint;
 import com.example.content2.POJO.SoilAnalyse.Region;
+import com.example.content2.POJO.SoilAnalyse.Result;
 import com.example.content2.POJO.fun1Calculate.CalculateRecord;
 import com.example.content2.POJO.fun1Calculate.ResultRecord;
 import com.example.content2.Service.Impl.SuggestValueServiceImpl.*;
 import com.example.content2.Service.SuggestValueService;
 import com.example.content2.Service.fun1Calculate.CalculateRecordService;
 import com.example.content2.Service.fun1Calculate.RandomMeaPointGenerate;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +22,27 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service("CalculateRecordService")
 public class CalculateRecordServiceImpl implements CalculateRecordService {
+
+    private static final Log log = LogFactory.getLog(CalculateRecordServiceImpl.class);
 
     @Resource
     private CalculateMapper calculateMapper;
 
     @Resource(name = "defaultRedisTemplate")
     private RedisTemplate<String,?> redisTemplate;
+
+    @Value("${region.debug}")
+    private boolean regionDebug;
+
+    @Resource(name = "regionsCache")
+    private List<Region> regionsCache;
 
     @Resource
     private SuggestValueService suggestValueService;
@@ -50,6 +65,7 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
 
         BigDecimal appendTimes = new BigDecimal("0.0");
         BigDecimal response = new BigDecimal("0.0");
+        BigDecimal regionSize = new BigDecimal("0.0");
         Long database_date = (Long) redisTemplate.opsForValue().get("databaseVersionDate");
         Long calculate_date = System.currentTimeMillis();
         for (long i = 0; i <loopTimes; i++) {
@@ -72,14 +88,15 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
             record.setCalculate_date(calculate_date);
             record.setDatabase_date(database_date);
             if (region==null){
-                MinRegionHandle handle = new MinRegionHandle(regionMapper);
+                MinRegionHandle handle = new MinRegionHandle(regionMapper,regionDebug,regionsCache);
                 handle.setOffset(offset);
                 handle.setMagnification(magnification);
-                Region minRegion = handle.getMinRegion(longitude, latitude);
+                Region minRegion = handle.get(longitude, latitude);
                 long end1 = System.currentTimeMillis();
                 record.setAppend_time(handle.getAppendTimes());
                 record.setResponse(end1-start);
                 record.setIs_direct(0);
+                record.setRegion_size(handle.getRegionSize());
             }
             //输出本次结果
             String tableName = getTableName();
@@ -88,16 +105,17 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
 
             appendTimes=appendTimes.add(new BigDecimal(record.getAppend_time()));
             response=response.add(new BigDecimal(record.getResponse()));
+            regionSize = regionSize.add(new BigDecimal(record.getRegion_size()));
         }
         BigDecimal divAppendTimes = appendTimes.divide(new BigDecimal(loopTimes));
         BigDecimal divResponse = response.divide(new BigDecimal(loopTimes));
-
+        BigDecimal divRegionSize = regionSize.divide(new BigDecimal(loopTimes));
         //记录统计结果
         ResultRecord resultRecord = new ResultRecord(null,
                 database_date,calculate_date,offset,magnification,
                 divAppendTimes.doubleValue(),divResponse.longValue()
-                ,loopTimes);
-        int i = recordMapper.insertNewResultRecord(resultRecord);
+                ,loopTimes,divRegionSize.longValue());
+        recordMapper.insertNewResultRecord(resultRecord);
     }
 
     @Override
@@ -112,11 +130,25 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
 
     @Override
     public int insertNewRecordIfAbsentCreate(String tableName,CalculateRecord cr) {
-        if ((tableExistCache!=null && tableExistCache.get(tableName)) || isExistTable(tableName) ){
+        if ((tableExistCache!=null && tableExistCache.containsKey(tableName)) || isExistTable(tableName) ){
             return calculateMapper.insertNewCalculateRecord(tableName, cr);
         }
         createTable(tableName);
         return calculateMapper.insertNewCalculateRecord(tableName, cr);
+    }
+
+
+    @Override
+    public Result calculateTemplate(Integer loopTimes,
+                                    Double offset,
+                                    Double offsetIncrement,
+                                    Integer fori,
+                                    Integer magnification) {
+
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        executorService.execute(new CalculateRunnable(loopTimes, offset,offsetIncrement,fori,
+                magnification,this));
+        return Result.getInstance(200,"成功收到任务,开始执行...",null);
     }
 
 
@@ -127,8 +159,6 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
         instance.setTimeInMillis(databaseVersionDate);
         return new SimpleDateFormat("yyyy_MM_dd").format(instance.getTime());
     }
-
-
 
     private String getCalculateDateFormat(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd");
@@ -181,4 +211,47 @@ public class CalculateRecordServiceImpl implements CalculateRecordService {
     }
 
 
+    static class CalculateRunnable implements Runnable{
+
+        Integer loopTimes;
+        Double offset;
+        Double offsetIncrement;
+        Integer fori;
+        Integer magnification;
+        CalculateRecordService service;
+
+        public CalculateRunnable(Integer loopTimes,
+                                 Double offset,
+                                 Double offsetIncrement,
+                                 Integer fori,
+                                 Integer magnification,
+                                 CalculateRecordService service) {
+            this.loopTimes = loopTimes;
+            this.offset = offset;
+            this.offsetIncrement = offsetIncrement;
+            this.fori = fori;
+            this.magnification = magnification;
+            this.service = service;
+        }
+
+        @Override
+        public void run() {
+
+            log.info("起始offset : "+offset);
+            log.info("offset 递增量 : "+offsetIncrement);
+            log.info("循环次数 : "+loopTimes);
+            log.info("扩增倍数 : "+magnification);
+            log.info("for循环递增次数 : "+fori);
+
+
+            for (int i = 0; i <fori; i++) {
+                long start = System.currentTimeMillis();
+                log.info("正在测试 offset : "+offset + " magnification : "+magnification);
+                service.calculateOffsetMagnificationForData(offset,magnification,loopTimes);
+                long end = System.currentTimeMillis();
+                System.out.println("本次测试完成,测试花费 : "+(end-start)+"ms");
+                offset +=offsetIncrement;
+            }
+        }
+    }
 }

@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.Vector;
 
-@Mapper
+
 public interface CropTypesMapper {
     public int insert(CropTypesMapper ct);
 

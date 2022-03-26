@@ -11,7 +11,7 @@ import java.util.ArrayList;
 @Service("RegionService")
 public class RegionServiceImpl implements RegionService {
 
-    private RegionMapper regionMapper;
+    private final RegionMapper regionMapper;
 
     @Autowired
     public RegionServiceImpl(RegionMapper regionMapper) {

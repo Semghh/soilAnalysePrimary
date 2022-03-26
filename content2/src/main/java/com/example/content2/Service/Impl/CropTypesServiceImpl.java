@@ -11,7 +11,7 @@ import java.util.Vector;
 public class CropTypesServiceImpl implements CropTypesService {
 
 
-    private CropTypesMapper cropTypesMapper;
+    private final CropTypesMapper cropTypesMapper;
 
     @Autowired
     public CropTypesServiceImpl(CropTypesMapper cropTypesMapper) {

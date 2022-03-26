@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
 
-@Mapper
+
 public interface ExpertSuggestValueMapper {
 
     public Double getExpertSuggestValue(@Param("lon") Double longitude, @Param("lat") Double latitude,

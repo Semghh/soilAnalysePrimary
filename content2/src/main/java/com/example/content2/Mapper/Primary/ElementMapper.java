@@ -4,7 +4,7 @@ import com.example.content2.POJO.SoilAnalyse.Element;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
-@Mapper
+
 public interface ElementMapper {
 
     @Select("select * from element where id=#{id}")

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 @Service("MenuService")
 public class MenuServiceImpl implements MenuService {
 
-    private MenuStoreTableMapper menuStoreTableMapper;
+    private final MenuStoreTableMapper menuStoreTableMapper;
 
     @Autowired
     public MenuServiceImpl(MenuStoreTableMapper menuMapper) {

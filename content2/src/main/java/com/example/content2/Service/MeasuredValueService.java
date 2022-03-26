@@ -5,18 +5,18 @@ import com.example.content2.POJO.SoilAnalyse.MeasuredValue;
 public interface MeasuredValueService {
 
 
-    public int insert(MeasuredValue mv);
+     int insert(MeasuredValue mv);
 
 
-    public int delete(MeasuredValue mv);
+     int delete(MeasuredValue mv);
 
 
 
-    public MeasuredValue select(MeasuredValue mv);
+     MeasuredValue select(MeasuredValue mv);
 
 
-    public MeasuredValue selectById_village(Long id_village);
+     MeasuredValue selectById_village(Long id_village);
 
 
-    public int insertPartly(MeasuredValue mv);
+     int insertPartly(MeasuredValue mv);
 }

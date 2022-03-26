@@ -17,8 +17,9 @@ public class CalculateRecord {
     private Double offset;
     private Integer magnification;
     private Long response;
-    private int append_time;
-    private int is_direct;
+    private Integer append_time;
+    private Integer is_direct;
+    private Integer region_size;
 
 
 }

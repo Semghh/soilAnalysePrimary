@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
-@Mapper
+
 public interface PeasantMapper {
     @Select("select id from peasant where id_card=#{id_card}")
     public Integer getIdByIdCard(String id_card);

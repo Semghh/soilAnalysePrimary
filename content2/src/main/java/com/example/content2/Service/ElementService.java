@@ -5,13 +5,13 @@ import org.apache.ibatis.annotations.Select;
 
 public interface ElementService {
     @Select("select * from element where id=#{id}")
-    public Element select(Integer id);
+     Element select(Integer id);
 
     @Select("select * from element where expression_=#{expression}")
-    public Element selectByExpression(String expression);
+     Element selectByExpression(String expression);
 
-    public Integer getElementIdByTranslation(String elementName);
+     Integer getElementIdByTranslation(String elementName);
 
-    public Integer getElementIdByExpression(String expression);
+     Integer getElementIdByExpression(String expression);
 
 }

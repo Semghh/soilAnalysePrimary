@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service("ElementService")
 public class ElementServiceImpl implements ElementService {
 
-    private ElementMapper elementMapper;
+    private final ElementMapper elementMapper;
 
 
     @Autowired

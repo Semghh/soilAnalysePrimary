@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.ArrayList;
 
-@Mapper
+
 public interface UsersMapper {
 
     @Select("select count(*) from users where username_=#{username}")

@@ -2,7 +2,6 @@ package com.example.content2.Config;
 
 
 import com.alibaba.druid.pool.DruidDataSource;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -17,7 +16,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan(basePackages = "com.example.content2.mapper.Secondary",
+@MapperScan(basePackages = "com.example.content2.Mapper.Secondary",
         sqlSessionFactoryRef = "secondarySqlSessionFactory")
 public class SecondaryDatasourceConfig {
 

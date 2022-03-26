@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.ArrayList;
 
-@Mapper
+
 public interface SuggestValueMapper {
     @Select("select `result` from `suggest_value` where `crop_type`=#{crop_type} and `name_element`= #{name_element} and #{measured_value} > `min_value` and #{measured_value} <=`max_value`")
     public Double selectResult(@Param("crop_type") Integer crop_type, @Param("name_element") String name_element, @Param("measured_value") Double measured_value);

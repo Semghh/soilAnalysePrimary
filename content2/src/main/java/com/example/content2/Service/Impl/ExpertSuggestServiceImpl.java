@@ -17,10 +17,10 @@ import java.util.Set;
 @Service("ExpertSuggestService")
 public class ExpertSuggestServiceImpl implements ExpertSuggestService {
 
-    private ExpertSuggestValueMapper expertSuggestValueMapper;
-    private ElementMapper elementMapper;
-    private CropTypesMapper cropTypesMapper;
-    private RegionMapper regionMapper;
+    private final ExpertSuggestValueMapper expertSuggestValueMapper;
+    private final ElementMapper elementMapper;
+    private final CropTypesMapper cropTypesMapper;
+    private final RegionMapper regionMapper;
 
     @Autowired
     public ExpertSuggestServiceImpl(ExpertSuggestValueMapper expertSuggestValueMapper, ElementMapper elementMapper, CropTypesMapper cropTypesMapper, RegionMapper regionMapper) {

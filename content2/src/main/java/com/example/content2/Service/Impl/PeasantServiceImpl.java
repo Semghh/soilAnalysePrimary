@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service("PeasantService")
 public class PeasantServiceImpl implements PeasantService {
 
-    private PeasantMapper peasantMapper;
+    private final PeasantMapper peasantMapper;
 
     @Autowired
     public PeasantServiceImpl(PeasantMapper peasantMapper) {

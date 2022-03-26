@@ -10,30 +10,30 @@ public interface SuggestValueService {
     /***
      *  只查询suggest_value表中的数据
      */
-    public Double selectResult(Integer crop_type,String name_element,Double measured_value);
+    Double selectResult(Integer crop_type, String name_element, Double measured_value);
 
     /***
      * 查询建议值，包含专家结果
      */
-    public Double selectSuggestValueWithExpert(Double longitude,Double latitude,
-                                               Integer crop_typeId,String name_elementId,Double measured_value);
+    Double selectSuggestValueWithExpert(Double longitude, Double latitude,
+                                        Integer crop_typeId, String name_elementId, Double measured_value);
 
-    public Result fun1(String longitudeText,
-                       String latitudeText,
-                       String crop_name,
-                       String RemoteAddr,boolean isTourist);
+    Result fun1(String longitudeText,
+                String latitudeText,
+                String crop_name,
+                String RemoteAddr, boolean isTourist);
 
-    public ArrayList<HashMap<String,Object>> getSuggestValuesByLimit(int page, int size);
+    ArrayList<HashMap<String, Object>> getSuggestValuesByLimit(int page, int size);
 
-    public Result updateSuggestValue(HashMap map);
+    Result updateSuggestValue(HashMap map);
 
-    public Integer getLatestId();
+    Integer getLatestId();
 
-    public Result insertNewSuggestValue(HashMap<String,Object> map);
+    Result insertNewSuggestValue(HashMap<String, Object> map);
 
-    public Result deleteSuggestValue(HashMap<String,Object> map);
+    Result deleteSuggestValue(HashMap<String, Object> map);
 
-    public Integer getSuggestValueTotal();
+    Integer getSuggestValueTotal();
 
-    public Result getExcelURl(HashMap<String,Object> map);
+    Result getExcelURl(HashMap<String, Object> map);
 }

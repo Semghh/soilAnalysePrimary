@@ -8,9 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Configuration
 public class Fun1ResultMapChainConfig {
@@ -68,19 +66,46 @@ public class Fun1ResultMapChainConfig {
                 resultMap.put("sug_KCL", DoubleFormat.format(2,KCL));
                 resultMap.put("sug_erAn", DoubleFormat.format(2,erAn));
                 resultMap.put("sug_niaoSu", DoubleFormat.format(2,niaoSu));
+
+                System.out.println("2");
+            }
+
+
+            @Override
+            public int value() {
+                return 2;
             }
         };
     }
 
+    @Bean
+    public Fun1ResultMapHandle getChain1(){
+        return new Fun1ResultMapHandle() {
+            @Override
+            public void resultMapHandle(HashMap<String, Object> map) {
+                System.out.println("1");
+            }
 
+            @Override
+            public int value() {
+                return 1;
+            }
+        };
+    }
 
     @Bean("defaultHandleChain")
-    @Order(Integer.MIN_VALUE)
-    public List<Fun1ResultMapHandle> getChainList(ApplicationContext context){
+    public Collection<Fun1ResultMapHandle> getChainList(ApplicationContext context){
         LinkedList<Fun1ResultMapHandle> res = new LinkedList<>();
+
+        PriorityQueue<Fun1ResultMapHandle> queue = new PriorityQueue<>(new Comparator<Fun1ResultMapHandle>() {
+            @Override
+            public int compare(Fun1ResultMapHandle o1, Fun1ResultMapHandle o2) {
+                return o1.value()- o2.value();
+            }
+        });
         context.getBeanProvider(Fun1ResultMapHandle.class)
                 .stream()
-                .forEach(res::add);
-        return res;
+                .forEach(queue::add);
+        return queue;
     }
 }

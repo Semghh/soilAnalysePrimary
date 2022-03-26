@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
-@Mapper
+
 public interface MeasuredValueMapper {
     @Insert("insert into measured_value values (#{id_village},#{ph},#{organic_matter},#{total_nitrogen},#{Olsen_P},#{Olsen_K},#{slowly_K},#{Effective_Cu},#{Effective_Zn},#{Effective_Fe},#{Effective_Mn})")
     public int insert(MeasuredValue mv);

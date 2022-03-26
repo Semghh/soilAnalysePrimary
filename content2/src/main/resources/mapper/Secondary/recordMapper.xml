@@ -6,8 +6,8 @@
     <insert id="insertNewResultRecord">
         insert into `result_record`
         (`database_date`,`calculate_date`,`offset`,`magnification`,`average_append_times`,
-         `average_response`,`loop_times`)
+         `average_response`,`loop_times`,`average_region_size`)
          values (#{database_date},#{calculate_date},#{offset},#{magnification},#{average_append_times},
-                 #{average_response},#{loop_times})
+                 #{average_response},#{loop_times},#{average_region_size})
     </insert>
 </mapper>

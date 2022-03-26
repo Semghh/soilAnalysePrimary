@@ -7,9 +7,10 @@
     <insert id="insertNewCalculateRecord">
         insert into ${tableName}
         (`longitude`,`latitude` ,`offset`,`magnification`,`response`,`is_direct`,`append_time`,
-         `database_date`,`calculate_date`)
+         `database_date`,`calculate_date`,`region_size`)
         values (#{cr.longitude},#{cr.latitude},#{cr.offset},#{cr.magnification},
-                #{cr.response},#{cr.is_direct},#{cr.append_time},#{cr.database_date},#{cr.calculate_date});
+                #{cr.response},#{cr.is_direct},#{cr.append_time},#{cr.database_date},
+                #{cr.calculate_date},#{cr.region_size});
     </insert>
     <update id="createCalculateTable">
         CREATE TABLE ${tableName}(
@@ -23,6 +24,7 @@
         `response` bigint,
         `append_time` int,
         `is_direct` int,
+        `region_size` int,
         PRIMARY KEY(`id`));
     </update>
     <select id="showTable" resultType="java.lang.String">

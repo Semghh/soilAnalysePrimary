@@ -16,10 +16,10 @@ import java.util.Vector;
 
 @RestController
 public class Fun2Controller {
-    private Double[] sugValues = new Double[4];
-    private SuggestValueService suggestValueDAOMapper;
-    private CropTypesService cropTypesDAOMapper;
-    private Log log  = LogFactory.getLog(this.getClass());
+    private final Double[] sugValues = new Double[4];
+    private final SuggestValueService suggestValueDAOMapper;
+    private final CropTypesService cropTypesDAOMapper;
+    private final Log log  = LogFactory.getLog(this.getClass());
 
     @Autowired
     public Fun2Controller(SuggestValueService suggestValueDAOMapper, CropTypesService cropTypesDAOMapper) {
@@ -28,7 +28,7 @@ public class Fun2Controller {
     }
 
     @PostMapping("/fun2")
-    public Result fun2(@RequestBody HashMap bodyParams){
+    public Result fun2(@RequestBody HashMap<String,Object> bodyParams){
         //获取请求参数
         String mea_Effective_N = (String) bodyParams.get("mea_Effective_N");
         String mea_Olsen_P = (String) bodyParams.get("mea_Olsen_P");
@@ -38,7 +38,7 @@ public class Fun2Controller {
         return realFun2(mea_Effective_N,mea_Olsen_P,mea_Olsen_K,mea_Organic_matter,typeName,bodyParams);
     }
     @GetMapping("/fun2")
-    public Result fun2_(@RequestParam HashMap urlParams){
+    public Result fun2_(@RequestParam HashMap<String,Object> urlParams){
         //获取请求参数
         String mea_Effective_N = (String) urlParams.get("mea_Effective_N");
         String mea_Olsen_P = (String) urlParams.get("mea_Olsen_P");

@@ -7,24 +7,24 @@ import java.util.Vector;
 
 public interface CropTypesService {
 
-    public int insert(CropTypesMapper ct);
+    int insert(CropTypesMapper ct);
 
 
-    public int delete(CropTypesMapper ct);
+    int delete(CropTypesMapper ct);
 
-    public int update(CropTypesMapper ct);
-
-
-    public CropTypesMapper select(CropTypesMapper ct);
+    int update(CropTypesMapper ct);
 
 
-    public Integer getTypeIdByName(String typeName);
+    CropTypesMapper select(CropTypesMapper ct);
 
 
-    public String getNameByTypeId(Integer id);
+    Integer getTypeIdByName(String typeName);
 
-    public Vector<String> selectAllCropNames();
 
-    public Vector<String> getAllEnableCropName();
+    String getNameByTypeId(Integer id);
+
+    Vector<String> selectAllCropNames();
+
+    Vector<String> getAllEnableCropName();
 
 }

@@ -9,32 +9,32 @@ import java.util.HashMap;
 public interface UsersService {
 
 
-    public int isExistsUsername(String username);
+    int isExistsUsername(String username);
 
-    public int registerNewUser(Users u);
+    int registerNewUser(Users u);
 
-    public Users selectByUsernameAndPassword(Users u);
+    Users selectByUsernameAndPassword(Users u);
 
-    public String getRolesById(Integer id);
+    String getRolesById(Integer id);
 
-    public String getRolesByUsername(String username);
+    String getRolesByUsername(String username);
 
-    public ArrayList<Users> getUsersByLimit(Integer page,Integer size);
+    ArrayList<Users> getUsersByLimit(Integer page, Integer size);
 
-    public Result insertNewUsers(HashMap map);
+    Result insertNewUsers(HashMap map);
 
-    public Result deleteUserById(HashMap map);
+    Result deleteUserById(HashMap map);
 
-    public Result dynamicUpdateUser(HashMap map);
+    Result dynamicUpdateUser(HashMap map);
 
-    public Result getUsersTotal();
+    Result getUsersTotal();
 
-    public Result getDistinctRoles();
+    Result getDistinctRoles();
 
-    public boolean checkLoginPass(String password,String username);
+    boolean checkLoginPass(String password, String username);
 
-    public String getHashPWbyUsername(String username);
+    String getHashPWbyUsername(String username);
 
 
-    public Result checkRepeatUsername(String username);
+    Result checkRepeatUsername(String username);
 }

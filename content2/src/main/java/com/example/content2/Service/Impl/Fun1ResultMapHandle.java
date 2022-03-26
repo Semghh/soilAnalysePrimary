@@ -20,5 +20,9 @@ public interface Fun1ResultMapHandle {
      * @param map 是fun1返回映射。所有的返回值都在里面
      *
      */
-    public void resultMapHandle(HashMap<String,Object> map);
+    void resultMapHandle(HashMap<String,Object> map);
+
+    default int value(){
+        return Integer.MAX_VALUE;
+    }
 }

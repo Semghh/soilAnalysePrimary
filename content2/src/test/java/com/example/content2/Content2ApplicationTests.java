@@ -41,18 +41,18 @@ class Content2ApplicationTests {
     @Resource
     CalculateRecordService calculateRecordService;
 
-    @Test
+//    @Test
     public void testApplicationContext(){
 
         ObjectProvider<Fun1ResultMapHandle> beanProvider = applicationContext.getBeanProvider(Fun1ResultMapHandle.class);
         ArrayList<Fun1ResultMapHandle> objects = new ArrayList<>();
         beanProvider.stream().forEach(objects::add);
     }
-    @Test
+//    @Test
     public void testRedisTemplate(){
         redisTemplate.opsForValue().set("databaseVersionDate",new Long(System.currentTimeMillis()));
     }
-    @Test
+//    @Test
     public void testCalculate(){
         double offset = 0.010;
         for (int i = 0; i < 10; i++) {

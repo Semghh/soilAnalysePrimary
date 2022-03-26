@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
 
-@Mapper
+
 public interface RegionMapper {
 //    public void insert(Region region);
 

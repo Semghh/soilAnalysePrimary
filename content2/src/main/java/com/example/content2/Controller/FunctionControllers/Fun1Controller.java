@@ -19,10 +19,8 @@ import java.util.Vector;
 
 @RestController
 public class Fun1Controller {
-    private Log log = LogFactory.getLog(this.getClass());
-
-    private SuggestValueService suggestValueService;
-    private CropTypesService cropTypesService;
+    private final SuggestValueService suggestValueService;
+    private final CropTypesService cropTypesService;
 
     @Autowired
     public Fun1Controller(CropTypesService cropTypesService, SuggestValueService suggestValueService) {
@@ -31,18 +29,17 @@ public class Fun1Controller {
     }
 
     @RequestMapping("/fun1")
-    public Result postFun1(@RequestParam HashMap bodyParams, HttpSession session, HttpServletRequest request) throws getFieldFromMap.notFoundSuchField {
+    public Result postFun1(@RequestParam HashMap<String,Object> bodyParams, HttpSession session, HttpServletRequest request) throws getFieldFromMap.notFoundSuchField {
 
         String[] paramNames = new String[]{"longitude","latitude","cropName"};
-        Class[] clz = new Class[]{String.class,String.class,String.class};
+        Class<?>[] clz = new Class[]{String.class,String.class,String.class};
         Object[] o = getFieldFromMap.get(bodyParams, paramNames, clz);
         String loginResult = (String) session.getAttribute("loginResult");
         if (loginResult==null || !loginResult.equals("true"))
             return Result.getInstance(409,"请先登录",null);
 
         String remoteAddr = request.getRemoteAddr();
-        boolean isTourist = false;
-        if (StringUtil.NotAllAndEquals((String) session.getAttribute("roles"),"tourist"))isTourist = true;
+        boolean isTourist = StringUtil.NotAllAndEquals((String) session.getAttribute("roles"), "tourist");
         return suggestValueService.fun1((String)o[0], (String)o[1], (String)o[2],remoteAddr,isTourist);
     }
 
